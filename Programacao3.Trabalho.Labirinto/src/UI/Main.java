@@ -16,6 +16,8 @@ public class Main {
      */
     public static void main(String[] args) {
        
+        System.out.print("kkkkk"); // teste
+        
         new LabirintoUI("C:\\Users\\leonardo.alves\\Documents\\NetBeansProjects\\Programacao3\\Programacao3\\Programacao3.Trabalho.Labirinto\\labirinto").run();
     }
     
