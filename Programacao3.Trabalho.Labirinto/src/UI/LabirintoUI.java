@@ -76,9 +76,10 @@ public class LabirintoUI implements IRatoListener {
 
 	@Override
 	/** Evento disparado quando o rato come um queijo. */
-	public void onEat() {
+	public void onEat(int noQueijos) {
 		System.out.println();
 		System.out.println("Hmmm, totoso...");
+                System.out.println("QUEIJOS COMIDOS: "+noQueijos);
 	}
 
 	@Override

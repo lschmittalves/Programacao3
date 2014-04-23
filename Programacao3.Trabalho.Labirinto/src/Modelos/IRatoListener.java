@@ -13,7 +13,7 @@ public interface IRatoListener {
 	public void onDead();
 
 	/** Metodo que e disparado quando o rato come um queijo. */
-	public void onEat();
+	public void onEat(int noQueijos);
 
 	/** Metodo que e disparado quando o rato chega a saida do labirinto. */
 	public void onFinish();

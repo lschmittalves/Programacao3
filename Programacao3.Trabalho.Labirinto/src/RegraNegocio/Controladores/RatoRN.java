@@ -308,7 +308,7 @@ public class RatoRN {
 	private void comerQueijo(Rato rato) {
 
 		if (rato.getRatoListener() != null) {
-			rato.getRatoListener().onEat();
+			rato.getRatoListener().onEat(rato.getQueijosComidos());
 		}
 		rato.incrQueijosComidos();
 
