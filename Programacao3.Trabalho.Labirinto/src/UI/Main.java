@@ -6,19 +6,19 @@
 
 package UI;
 
-/**
- *
- * @author leonardo.alves
- */
+/** Classe que roda a leitura do arquivo. */
 public class Main {
 
-    /**
-     */
-    public static void main(String[] args) {
-       
-        System.out.print("kkkkk"); // teste
-        
-        new LabirintoUI("C:\\Users\\leonardo.alves\\Documents\\NetBeansProjects\\Programacao3\\Programacao3\\Programacao3.Trabalho.Labirinto\\labirinto").run();
-    }
-    
+	/**
+	 * Metodo onde e lido o diretorio em que o labirinto foi salvo.
+	 * 
+	 * @param args
+	 *            the command line arguments
+	 */
+	public static void main(String[] args) {
+		new LabirintoUI(
+				"C:\\Users\\fernanda.vitorio\\workspace\\Programacao3.Trabalho.Labirinto\\labirinto")
+				.run();
+	}
+
 }

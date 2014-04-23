@@ -8,7 +8,7 @@ import Modelos.Obstaculo;
 import Modelos.Rato;
 import org.joda.time.DateTime;
 import org.joda.time.Minutes;
-
+/** Possue metodos que controlam as funcoes relativas ao objeto rato. */
 public class RatoRN {
 
 	public void procurarSaida(Labirinto labirinto) throws RuntimeException {
@@ -17,18 +17,33 @@ public class RatoRN {
 	}
 
 	@SuppressWarnings("incomplete-switch")
+	/**Metodo utilizado para o rato procurar a saida do labirinto.
+	 * 
+	 * @param Labirinto labirinto
+	 * 
+	 * @param Obstaculo ultimo obstaculo
+	 * 
+	 * @param EnumDirecoes ultimoMovimento
+	 * 
+	 * @throws RuntimeException*/
 	private void procurarSaida(Labirinto labirinto, Obstaculo ultimoObstaculo,
 			EnumDirecoes ultimoMovimento) throws RuntimeException {
 
 		if (tempoEsgotado(labirinto.getRato())) {
 			return;
 		}
-		
+
+		// Se o ultimo obstaculo e dirente de nulo, e feito um switch no qual e
+		// verificado qual o tipo de obstaculo.
+
 		if (ultimoObstaculo != null) {
 			switch (ultimoObstaculo.getTipoObstaculo()) {
+			// Caso seja uma armadilha, o rato e morto.
 			case ARMADILHA:
 				matarRato(labirinto.getRato());
 				return;
+				// Se for um queijo, o rato come o mesmo e a posicao em que
+				// estava o queijo fica em branco.
 			case QUEIJO:
 				comerQueijo(labirinto.getRato());
 				new LabirintoRN().getObstaculoLabirinto(labirinto,
@@ -36,6 +51,8 @@ public class RatoRN {
 						labirinto.getRato().getPosicaoY()).setTipoObstaculo(
 						EnumTipoObstaculo.ESPACO_BRANCO);
 				break;
+			// Se for a saida o evento onFinish e disparado, o que indica que o
+			// rato chegou ao fim do labirinto.
 			case SAIDA:
 				if (labirinto.getRato().getRatoListener() != null) {
 					labirinto.getRato().getRatoListener().onFinish();
@@ -43,9 +60,12 @@ public class RatoRN {
 				return;
 			}
 		}
-
+		// Se o caminhado nao estiver livre, o rato volta pelo mesmo caminho.
 		if (!porCaminhoLivre(labirinto)) {
-			if (labirinto.getRato().getLastDirection()==null && labirinto.getRato().getDirecoesPercorridas().size() !=0) {
+			// Se a ultima direcao percorrida for nula e o quantidade de
+			// direcoes percorridas for diferente de zero, matar o rato.
+			if (labirinto.getRato().getLastDirection() == null
+					&& labirinto.getRato().getDirecoesPercorridas().size() != 0) {
 				matarRato(labirinto.getRato());
 				return;
 			}
@@ -58,48 +78,75 @@ public class RatoRN {
 
 	}
 
+	/**
+	 * Metodo que verifica se o caminho esta livre e move o rato. E verificado
+	 * se o rato pode andar para a direcao especificada e se ele ja nao passou
+	 * pela mesma. Caso as verificacoes retornem true, o rato e movido, caso
+	 * retornem false o rato permanece na mesma posicao.
+	 * 
+	 * @param Labirinto
+	 *            labirinto
+	 */
 	private boolean porCaminhoLivre(Labirinto labirinto) {
 		if (ratoPodeAndar(labirinto, EnumDirecoes.DIREITA)
 				&& !ratoJaPassou(labirinto.getRato(), EnumDirecoes.DIREITA)) {
-			moverRato(labirinto, EnumDirecoes.DIREITA,true);
+			moverRato(labirinto, EnumDirecoes.DIREITA, true);
 			return true;
 		} else if (ratoPodeAndar(labirinto, EnumDirecoes.ESQUERDA)
 				&& !ratoJaPassou(labirinto.getRato(), EnumDirecoes.ESQUERDA)) {
-			moverRato(labirinto, EnumDirecoes.ESQUERDA,true);
+			moverRato(labirinto, EnumDirecoes.ESQUERDA, true);
 			return true;
 		} else if (ratoPodeAndar(labirinto, EnumDirecoes.FRENTE)
 				&& !ratoJaPassou(labirinto.getRato(), EnumDirecoes.FRENTE)) {
-			moverRato(labirinto, EnumDirecoes.FRENTE,true);
+			moverRato(labirinto, EnumDirecoes.FRENTE, true);
 			return true;
 		} else if (ratoPodeAndar(labirinto, EnumDirecoes.ATRAS)
 				&& !ratoJaPassou(labirinto.getRato(), EnumDirecoes.ATRAS)) {
-			moverRato(labirinto, EnumDirecoes.ATRAS,true);
+			moverRato(labirinto, EnumDirecoes.ATRAS, true);
 			return true;
 		}
 		return false;
 	}
 
+	/**
+	 * Metodo utilizado quando nao ha mais opcoes para o rato andar nas quais
+	 * ele ja nao tenha passado. E verificada a ultima direcao percorrida pelo
+	 * rato, a mesma e removida e o rato anda para a direcao contraria.
+	 * 
+	 * @param Labirinto labirinto
+	 */
 	private void voltarMesmoCaminho(Labirinto labirinto) {
 
 		if (labirinto.getRato().getLastDirection() == EnumDirecoes.ESQUERDA) {
 			labirinto.getRato().removerUltimaDirecao();
-			moverRato(labirinto, EnumDirecoes.DIREITA,false);
+			moverRato(labirinto, EnumDirecoes.DIREITA, false);
 
 		} else if (labirinto.getRato().getLastDirection() == EnumDirecoes.DIREITA) {
 			labirinto.getRato().removerUltimaDirecao();
-			moverRato(labirinto, EnumDirecoes.ESQUERDA,false);
+			moverRato(labirinto, EnumDirecoes.ESQUERDA, false);
 
 		} else if (labirinto.getRato().getLastDirection() == EnumDirecoes.ATRAS) {
 			labirinto.getRato().removerUltimaDirecao();
-			moverRato(labirinto, EnumDirecoes.FRENTE,false);
+			moverRato(labirinto, EnumDirecoes.FRENTE, false);
 
 		} else if (labirinto.getRato().getLastDirection() == EnumDirecoes.FRENTE) {
 			labirinto.getRato().removerUltimaDirecao();
-			moverRato(labirinto, EnumDirecoes.ATRAS,false);
+			moverRato(labirinto, EnumDirecoes.ATRAS, false);
 
 		}
 	}
 
+	/**
+	 * Metodo para mover o rato. Para cada direcao em que o rato anda e pegada a
+	 * posicao x (linha) e posicao y (coluna), setadas como nova posicao e
+	 * gravadas.
+	 * 
+	 * @param Labirinto labirinto
+	 * 
+	 * @param EnumDirecoes direcao
+	 * 
+	 * @param gravarDirecao
+	 */
 	private void moverRato(Labirinto labirinto, EnumDirecoes direcao,
 			boolean gravarDirecao) {
 		int posXNovaRato = 0;
@@ -138,6 +185,7 @@ public class RatoRN {
 		}
 	}
 
+	/** Move o rato para uma das direcoes especificadas. */
 	private boolean ratoPodeAndar(Labirinto labirinto, EnumDirecoes direcao) {
 
 		int posXDesejadaRato = 0;
@@ -212,19 +260,21 @@ public class RatoRN {
 		return getDirecaoJaExecutada(rato, posXDesejadaRato, posYDesejadaRato) != null;
 	}
 
+	/***/
 	private EnumDirecoes getDirecaoJaExecutada(Rato rato, int posX, int posY)
 			throws RuntimeException {
-
+		// Se nao ha um rato no labirinto, lanca excecao.
 		if (rato == null) {
-			throw new RuntimeException("Parâmetro rato não pode ser nulo.");
+			throw new RuntimeException("Par�metro rato n�o pode ser nulo.");
 		}
-
+		// Se direcoes percorridas forem nulas, lanca excecao.
 		if (rato.getDirecoesPercorridas() == null) {
-			throw new RuntimeException("Rato não possui obstaculos.");
+			throw new RuntimeException("Rato n�o possui obstaculos.");
 		}
-
+		// Se direcoes percorridas contem a posicao da coluna
 		if (rato.getDirecoesPercorridas().containsKey(posY)) {
-
+			// Se direcoes percorridas tem posicao da coluna e contem posicao da
+			// linha
 			if (rato.getDirecoesPercorridas().get(posY).containsKey(posX)) {
 				return rato.getDirecoesPercorridas().get(posY).get(posX);
 			}
@@ -233,6 +283,11 @@ public class RatoRN {
 		return null;
 	}
 
+	/**
+	 * Metodo que controla o tempo de execucao do labirinto. E pega a data e
+	 * hora em que iniciou o labirinto e caso apos 5 minutos o rato nao tiver
+	 * chegado ao final do labirinto, o rato e morto.
+	 */
 	private boolean tempoEsgotado(Rato rato) {
 
 		if (Minutes.minutesBetween(rato.getDataInicio(), DateTime.now())
@@ -250,7 +305,6 @@ public class RatoRN {
 		}
 		rato.setVivo(false);
 	}
-
 	private void comerQueijo(Rato rato) {
 
 		if (rato.getRatoListener() != null) {
