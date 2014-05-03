@@ -3,19 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package RegraNegocio.Factory;
 
 import Modelos.EnumTipoObstaculo;
 import Modelos.Obstaculo;
 
-/**
- *
- * @author fernanda.vitorio
- */
+// Classe ObstaculoFactory, extraida da parte do código da Classe LabirintoFactory.
 public class ObstaculoFactory {
-    
-    
+
     public Obstaculo gerarObstaculo(char atual, int j, int i) throws RuntimeException {
 
         Obstaculo obstaculo;
@@ -46,6 +41,5 @@ public class ObstaculoFactory {
         }
         return obstaculo;
     }
-    
-    
+
 }
