@@ -33,11 +33,9 @@ public class LabirintoFactory {
 
                 char atual = labirintoTexto.get(i).charAt(j);
                 Obstaculo obstaculo=  new ObstaculoFactory().gerarObstaculo(atual, j, i);
-
-                
-                
-                
-//                  Obstaculo obstaculo;
+               
+/** Foi extraido o código abaixo e criada a Classe ObstaculoFactory.*/
+//        Obstaculo obstaculo;
 //        switch (atual) {
 //            case '.':
 //                obstaculo = new Obstaculo(j, i,
@@ -63,10 +61,7 @@ public class LabirintoFactory {
 //            default:
 //                throw new RuntimeException("Caracter inv�lido!");
 //        }
-                
-                
-             
-                
+                         
                 linha.put(j, obstaculo);
 
                 if (obstaculo.getTipoObstaculo() == EnumTipoObstaculo.ENTRADA) {
