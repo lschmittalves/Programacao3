@@ -37,7 +37,7 @@ public class RatoRN {
         if (tempoEsgotado(labirinto.getRato())) {
             return;
         }
-
+        /* Foi extraido o código abaixo e criado o método validaUltimoObstaculo.*/
 //            if (ultimoObstaculo != null) {
 //                switch (ultimoObstaculo.getTipoObstaculo()) {
 //                    // Caso seja uma armadilha, o rato e morto.
@@ -68,7 +68,7 @@ public class RatoRN {
 
         // Se o caminhado nao estiver livre, o rato volta pelo mesmo caminho.
         if (!porCaminhoLivre(labirinto)) {
-			// Se a ultima direcao percorrida for nula e o quantidade de
+            // Se a ultima direcao percorrida for nula e o quantidade de
             // direcoes percorridas for diferente de zero, matar o rato.
             if (labirinto.getRato().getLastDirection() == null
                     && labirinto.getRato().getDirecoesPercorridas().size() != 0) {
@@ -83,6 +83,7 @@ public class RatoRN {
                 .getRato().getPosicaoY()), ultimoMovimento);
 
     }
+    /* Método validaUltimoObstaculo, extraido do código que contém o Switch dentro do método procurarSaida. */
 
     private boolean validaUltimoObstaculo(Obstaculo ultimoObstaculo, Labirinto labirinto) throws RuntimeException {
         // Se o ultimo obstaculo e dirente de nulo, e feito um switch no qual e
@@ -93,7 +94,7 @@ public class RatoRN {
                 case ARMADILHA:
                     matarRato(labirinto.getRato());
                     return true;
-            // Se for um queijo, o rato come o mesmo e a posicao em que
+                // Se for um queijo, o rato come o mesmo e a posicao em que
                 // estava o queijo fica em branco.
                 case QUEIJO:
                     comerQueijo(labirinto.getRato());
@@ -102,7 +103,7 @@ public class RatoRN {
                             labirinto.getRato().getPosicaoY()).setTipoObstaculo(
                                     EnumTipoObstaculo.ESPACO_BRANCO);
                     break;
-            // Se for a saida o evento onFinish e disparado, o que indica que o
+                // Se for a saida o evento onFinish e disparado, o que indica que o
                 // rato chegou ao fim do labirinto.
                 case SAIDA:
                     if (labirinto.getRato().getRatoListener() != null) {
@@ -187,7 +188,8 @@ public class RatoRN {
         int posXNovaRato = proximaPosicaoEmX(direcao, labirinto.getRato());
         int posYNovaRato = proximaPosicaoEmY(direcao, labirinto.getRato());
 
-        //		switch (direcao) {
+        /*Foi extraido o código abaixo e criados dois métodos, método proximaPosicaoEmX e método proximaPosicaoEmY.*/
+//		switch (direcao) {
 //		case FRENTE:
 //			posXNovaRato = labirinto.getRato().getPosicaoX();
 //			posYNovaRato = labirinto.getRato().getPosicaoY() - 1;
@@ -219,6 +221,7 @@ public class RatoRN {
                     .onMove(new LabirintoRN().labirintoToPrint(labirinto));
         }
     }
+    /* Método proximaPosicaoEmY, extraido do código que contém o Switch dentro do método moverRato.*/
 
     private int proximaPosicaoEmY(EnumDirecoes direcao, Rato rato) {
 
@@ -240,6 +243,7 @@ public class RatoRN {
         }
         return posYNovaRato;
     }
+    /* Método proximaPosicaoEmX, extraido do código que contém o Switch.*/
 
     private int proximaPosicaoEmX(EnumDirecoes direcao, Rato rato) {
         int posXNovaRato = 0;
@@ -287,7 +291,6 @@ public class RatoRN {
 //                break;
 //
 //        }
-
         Obstaculo obstaculoCaminho = new LabirintoRN().getObstaculoLabirinto(
                 labirinto, posXDesejadaRato, posYDesejadaRato);
 
@@ -313,7 +316,7 @@ public class RatoRN {
     private boolean ratoJaPassou(Rato rato, EnumDirecoes direcao) {
         int posXDesejadaRato = proximaPosicaoEmX(direcao, rato);
         int posYDesejadaRato = proximaPosicaoEmY(direcao, rato);
-        
+
 //        switch (direcao) {
 //            case FRENTE:
 //                posXDesejadaRato = rato.getPosicaoX();
@@ -333,12 +336,11 @@ public class RatoRN {
 //                break;
 //
 //        }
-
         return getDirecaoJaExecutada(rato, posXDesejadaRato, posYDesejadaRato) != null;
     }
 
     /**
-     * 
+     *
      */
     private EnumDirecoes getDirecaoJaExecutada(Rato rato, int posX, int posY)
             throws RuntimeException {
@@ -352,7 +354,7 @@ public class RatoRN {
         }
         // Se direcoes percorridas contem a posicao da coluna
         if (rato.getDirecoesPercorridas().containsKey(posY)) {
-			// Se direcoes percorridas tem posicao da coluna e contem posicao da
+            // Se direcoes percorridas tem posicao da coluna e contem posicao da
             // linha
             if (rato.getDirecoesPercorridas().get(posY).containsKey(posX)) {
                 return rato.getDirecoesPercorridas().get(posY).get(posX);
