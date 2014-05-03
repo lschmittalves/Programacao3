@@ -268,25 +268,25 @@ public class RatoRN {
         int posXDesejadaRato = proximaPosicaoEmX(direcao, labirinto.getRato());
         int posYDesejadaRato = proximaPosicaoEmY(direcao, labirinto.getRato());
 
-        switch (direcao) {
-            case FRENTE:
-                posXDesejadaRato = labirinto.getRato().getPosicaoX();
-                posYDesejadaRato = labirinto.getRato().getPosicaoY() - 1;
-                break;
-            case ATRAS:
-                posXDesejadaRato = labirinto.getRato().getPosicaoX();
-                posYDesejadaRato = labirinto.getRato().getPosicaoY() + 1;
-                break;
-            case DIREITA:
-                posXDesejadaRato = labirinto.getRato().getPosicaoX() + 1;
-                posYDesejadaRato = labirinto.getRato().getPosicaoY();
-                break;
-            case ESQUERDA:
-                posXDesejadaRato = labirinto.getRato().getPosicaoX() - 1;
-                posYDesejadaRato = labirinto.getRato().getPosicaoY();
-                break;
-
-        }
+//        switch (direcao) {
+//            case FRENTE:
+//                posXDesejadaRato = labirinto.getRato().getPosicaoX();
+//                posYDesejadaRato = labirinto.getRato().getPosicaoY() - 1;
+//                break;
+//            case ATRAS:
+//                posXDesejadaRato = labirinto.getRato().getPosicaoX();
+//                posYDesejadaRato = labirinto.getRato().getPosicaoY() + 1;
+//                break;
+//            case DIREITA:
+//                posXDesejadaRato = labirinto.getRato().getPosicaoX() + 1;
+//                posYDesejadaRato = labirinto.getRato().getPosicaoY();
+//                break;
+//            case ESQUERDA:
+//                posXDesejadaRato = labirinto.getRato().getPosicaoX() - 1;
+//                posYDesejadaRato = labirinto.getRato().getPosicaoY();
+//                break;
+//
+//        }
 
         Obstaculo obstaculoCaminho = new LabirintoRN().getObstaculoLabirinto(
                 labirinto, posXDesejadaRato, posYDesejadaRato);
