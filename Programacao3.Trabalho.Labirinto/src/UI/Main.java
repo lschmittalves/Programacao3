@@ -17,7 +17,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		new LabirintoUI(
-				"C:\\Users\\fernanda.vitorio\\workspace\\Programacao3.Trabalho.Labirinto\\labirinto")
+				"C:\\Users\\fernanda.vitorio\\Documents\\NetBeansProjects\\Programacao3\\Programacao3.Trabalho.Labirinto\\labirinto")
 				.run();
 	}
 
