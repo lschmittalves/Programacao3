@@ -221,7 +221,11 @@ public class RatoRN {
                     .onMove(new LabirintoRN().labirintoToPrint(labirinto));
         }
     }
-    /* Método proximaPosicaoEmY, extraido do código que contém o Switch dentro do método moverRato.*/
+    /* Método proximaPosicaoEmY, extraido do código que contém o Switch dentro do método moverRato.
+     *
+     *Utilizado assert.
+     * 
+     */
 
     private int proximaPosicaoEmY(EnumDirecoes direcao, Rato rato) {
 
@@ -241,9 +245,13 @@ public class RatoRN {
                 break;
 
         }
+        assert posYNovaRato != 0;
         return posYNovaRato;
     }
-    /* Método proximaPosicaoEmX, extraido do código que contém o Switch.*/
+    /* Método proximaPosicaoEmX, extraido do código que contém o Switch.
+     *
+     * Utilizado assert.
+     */
 
     private int proximaPosicaoEmX(EnumDirecoes direcao, Rato rato) {
         int posXNovaRato = 0;
@@ -261,6 +269,7 @@ public class RatoRN {
                 posXNovaRato = rato.getPosicaoX() - 1;
                 break;
         }
+        assert posXNovaRato != 0;
         return posXNovaRato;
     }
 
