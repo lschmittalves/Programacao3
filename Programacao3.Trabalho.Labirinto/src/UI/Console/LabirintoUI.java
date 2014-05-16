@@ -1,4 +1,4 @@
-package UI;
+package UI.Console;
 
 import Modelos.EnumCores;
 import Modelos.IRatoListener;
