@@ -13,5 +13,6 @@ public interface ICallBackToContext {
 
     public void onOpenScreen();
     public void onTradeScreen();
-
+    public void salvarLabirinto();
+    
 }
