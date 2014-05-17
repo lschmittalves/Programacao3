@@ -6,7 +6,6 @@
 package UI.Slick;
 
 
-import UI.Slick.Telas.ITelaListener;
 import UI.Slick.Telas.Menu;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
@@ -17,8 +16,9 @@ import org.newdawn.slick.state.StateBasedGame;
  *
  * @author leonardo.alves
  */
-public class LabirintoSlickUI extends StateBasedGame implements ITelaListener{
+public class LabirintoSlickUI extends StateBasedGame implements ICallBackToContext{
 
+    private static LabirintoSlickUI labirintoSlickUI = null;
 
     public void run() throws SlickException{
             AppGameContainer app = new AppGameContainer(new LabirintoSlickUI());
@@ -30,8 +30,14 @@ public class LabirintoSlickUI extends StateBasedGame implements ITelaListener{
     
     }
     
+    public static LabirintoSlickUI getInstance() {
+      if(labirintoSlickUI == null) {
+         labirintoSlickUI = new LabirintoSlickUI();
+      }
+      return labirintoSlickUI;
+   }
     
-    public LabirintoSlickUI() {
+    private LabirintoSlickUI() {
         super("Labirinto");
         // TODO Auto-generated constructor stub
     }

@@ -1,11 +1,17 @@
 package UI.Slick.Telas;
 
+import UI.Slick.ICallBackToContext;
 import UI.Slick.Framework.Components.Button;
 import UI.Slick.Framework.Components.IButtonListener;
 import UI.Slick.Framework.Components.ISlickComponent;
+import UI.Swing.Util.FrmImportacao;
+import UI.Swing.Util.IFrmActionListener;
+import java.io.File;
 import java.util.Map;
 import java.util.TreeMap;
-import javax.swing.JFileChooser;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -15,18 +21,18 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class Menu extends BasicGameState implements IButtonListener {
+public class Menu extends BasicGameState implements IButtonListener, IFrmActionListener {
 
     private static final boolean log = false;
     private Image background;
     private TreeMap<String, ISlickComponent> screenComponents;
-    private ITelaListener iTelaListener;
+    private ICallBackToContext callBackToContext;
 
     private Menu() {
     }
 
-    public Menu(ITelaListener iTelaListener) {
-        this.iTelaListener = iTelaListener;
+    public Menu(ICallBackToContext callBackToContext) {
+        this.callBackToContext = callBackToContext;
     }
 
     @Override
@@ -75,18 +81,26 @@ public class Menu extends BasicGameState implements IButtonListener {
 
     @Override
     public void onClick(Button sender) {
-        switch (sender.getId()) {
-            case "btnPlay":
-                System.exit(0);
-            case "btnImportar":
-                JFileChooser fileChooser = new JFileChooser();
-                if (fileChooser.showOpenDialog() == JFileChooser.APPROVE_OPTION) {
-                    File file = fileChooser.getSelectedFile();
-                }
-            case "btnSair":
-                System.exit(0);
+        try {
+            switch (sender.getId()) {
+                case "btnPlay":
+                    System.exit(0);
+                case "btnImportar":
+                    new FrmImportacao(this).setVisible(true);
+                    break;
+                case "btnSair":
+                    System.exit(0);
+                    break;
 
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
+    }
+
+    @Override
+    public void onSelectFile(File file) {
+
     }
 
 }

@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package UI.Slick.Telas;
+package UI.Slick;
 
 /**
  *
  * @author leonardo.alves
  */
-public interface ITelaListener {
+public interface ICallBackToContext {
 
     public void onOpenScreen();
     public void onTradeScreen();
