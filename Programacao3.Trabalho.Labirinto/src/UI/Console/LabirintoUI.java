@@ -26,8 +26,7 @@ public class LabirintoUI implements IRatoListener {
 		try {
 			IFachada regraNegocio = new Fachada();
 
-			Labirinto labirinto = regraNegocio
-					.criarLabirinto(diretorioLabirinto);
+			Labirinto labirinto = regraNegocio.criarLabirinto(diretorioLabirinto);
 			labirinto.getRato().addListener(this);
 			System.out.println(regraNegocio.labirintoToPrint(labirinto));
 			regraNegocio.procurarSaida(labirinto);

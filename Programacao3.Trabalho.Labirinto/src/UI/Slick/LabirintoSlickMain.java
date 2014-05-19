@@ -6,7 +6,9 @@
 package UI.Slick;
 
 
-import UI.Slick.Telas.Menu;
+import Modelos.Labirinto;
+import UI.Slick.Telas.LabirintoSlick;
+import UI.Slick.Telas.MenuSlick;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -16,12 +18,14 @@ import org.newdawn.slick.state.StateBasedGame;
  *
  * @author leonardo.alves
  */
-public class LabirintoSlickUI extends StateBasedGame implements ICallBackToContext{
+public class LabirintoSlickMain extends StateBasedGame implements ICallBackToContext{
 
-    private static LabirintoSlickUI labirintoSlickUI = null;
-
+    private static LabirintoSlickMain labirintoSlickUI = null;
+    private Labirinto labirinto = null;
+    private AppGameContainer app ;
+    
     public void run() throws SlickException{
-            AppGameContainer app = new AppGameContainer(new LabirintoSlickUI());
+            app = new AppGameContainer(new LabirintoSlickMain());
             app.setDisplayMode(1024, 768, false);
             app.setShowFPS(false);
             
@@ -30,22 +34,22 @@ public class LabirintoSlickUI extends StateBasedGame implements ICallBackToConte
     
     }
     
-    public static LabirintoSlickUI getInstance() {
+    public static LabirintoSlickMain getInstance() {
       if(labirintoSlickUI == null) {
-         labirintoSlickUI = new LabirintoSlickUI();
+         labirintoSlickUI = new LabirintoSlickMain();
       }
       return labirintoSlickUI;
    }
     
-    private LabirintoSlickUI() {
+    private LabirintoSlickMain() {
         super("Labirinto");
         // TODO Auto-generated constructor stub
     }
 
     @Override
     public void initStatesList(GameContainer arg0) throws SlickException {
-        addState(new Menu(this));
-   //     addState(new Play());
+       addState(new MenuSlick(this));
+       addState(new LabirintoSlick(this));
 
     }
 
@@ -55,7 +59,7 @@ public class LabirintoSlickUI extends StateBasedGame implements ICallBackToConte
     }
 
     @Override
-    public void onTradeScreen() {
-  
+    public void salvarLabirinto(Labirinto labirinto) {
+       this.labirinto = labirinto;
     }
 }

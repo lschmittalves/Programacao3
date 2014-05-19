@@ -5,7 +5,8 @@
  */
 package UI;
 
-import UI.Slick.LabirintoSlickUI;
+import UI.Slick.LabirintoSlickMain;
+
 
 /**
  * Classe que roda a leitura do arquivo.
@@ -20,7 +21,7 @@ public class Main {
     public static void main(String[] args) {
 
         try {
-             LabirintoSlickUI.getInstance().run();               
+             LabirintoSlickMain.getInstance().run();               
         } catch (Exception e) {
             e.printStackTrace();
         }

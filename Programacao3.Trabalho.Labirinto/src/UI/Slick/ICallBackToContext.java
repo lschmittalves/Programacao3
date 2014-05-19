@@ -5,6 +5,8 @@
  */
 package UI.Slick;
 
+import Modelos.Labirinto;
+
 /**
  *
  * @author leonardo.alves
@@ -12,7 +14,6 @@ package UI.Slick;
 public interface ICallBackToContext {
 
     public void onOpenScreen();
-    public void onTradeScreen();
-    public void salvarLabirinto();
+    public void salvarLabirinto(Labirinto labirinto);
     
 }
