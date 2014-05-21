@@ -12,7 +12,7 @@ public class FrmImportacao extends javax.swing.JFrame {
 
     private FrmImportacao() throws HeadlessException {
     }
-     
+
     public FrmImportacao(IFrmActionListener actionListener) throws Exception {
 
         for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -21,15 +21,14 @@ public class FrmImportacao extends javax.swing.JFrame {
                 break;
             }
         }
-Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 
         initComponents();
-        
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
-seletorArquivo.setFileFilter(filter);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation((dim.width / 2) - (this.getSize().width / 2), (dim.height / 2) - (this.getSize().height / 2));
 
-        
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
+        seletorArquivo.setFileFilter(filter);
+
         this.actionListener = actionListener;
     }
 
@@ -115,7 +114,6 @@ seletorArquivo.setFileFilter(filter);
             txtArquivoSelecionado.setText(seletorArquivo.getSelectedFile().getAbsolutePath());
         }
     }//GEN-LAST:event_txtArquivoSelecionadoMouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
