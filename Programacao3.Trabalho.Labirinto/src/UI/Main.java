@@ -21,7 +21,8 @@ public class Main {
     public static void main(String[] args) {
 
         try {
-             LabirintoSlickMain.getInstance().run();               
+           LabirintoSlickMain labirintoSlickMain = LabirintoSlickMain.getInstance();
+                     labirintoSlickMain.run();               
         } catch (Exception e) {
             e.printStackTrace();
         }

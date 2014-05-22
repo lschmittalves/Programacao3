@@ -7,6 +7,7 @@ import Modelos.EnumTipoObstaculo;
 import Modelos.Labirinto;
 import Modelos.Obstaculo;
 import Modelos.Rato;
+import java.util.LinkedList;
 
 /**
  * Classe responsavel pela criacao do labirinto e objetos relacionados ao mesmo.
@@ -24,17 +25,21 @@ public class LabirintoFactory {
             throws RuntimeException {
 
         TreeMap<Integer, TreeMap<Integer, Obstaculo>> obstaculos = new TreeMap<>();
+        LinkedList<LinkedList<EnumTipoObstaculo>> matrizObstaculos = new LinkedList<>();
         Obstaculo inicio = null;
 
         for (int i = 0; i < labirintoTexto.size(); i++) {
 
             TreeMap<Integer, Obstaculo> linha = new TreeMap<>();
+            LinkedList<EnumTipoObstaculo> linhaTipoObstaculo = new LinkedList<>();
             for (int j = 0; j < labirintoTexto.get(i).length(); j++) {
 
                 char atual = labirintoTexto.get(i).charAt(j);
-                Obstaculo obstaculo=  new ObstaculoFactory().gerarObstaculo(atual, j, i);
-               
-/** Foi extraido o código abaixo e criada a Classe ObstaculoFactory.*/
+                Obstaculo obstaculo = new ObstaculoFactory().gerarObstaculo(atual, j, i);
+
+                /**
+                 * Foi extraido o código abaixo e criada a Classe ObstaculoFactory.
+                 */
 //        Obstaculo obstaculo;
 //        switch (atual) {
 //            case '.':
@@ -61,16 +66,16 @@ public class LabirintoFactory {
 //            default:
 //                throw new RuntimeException("Caracter inv�lido!");
 //        }
-                         
+                linhaTipoObstaculo.add(obstaculo.getTipoObstaculo());
                 linha.put(j, obstaculo);
 
                 if (obstaculo.getTipoObstaculo() == EnumTipoObstaculo.ENTRADA) {
                     inicio = obstaculo;
                 }
-
                 obstaculos.put(i, linha);
-
             }
+            
+            matrizObstaculos.add(linhaTipoObstaculo);
         }
 
         if (inicio == null) {
@@ -78,11 +83,9 @@ public class LabirintoFactory {
         }
 
         Rato rato = new Rato(inicio.getPosicaoX(), inicio.getPosicaoY());
-        Labirinto objLabirinto = new Labirinto(obstaculos, rato);
+        Labirinto objLabirinto = new Labirinto(obstaculos, rato,matrizObstaculos);
 
         return objLabirinto;
     }
-
-    
 
 }

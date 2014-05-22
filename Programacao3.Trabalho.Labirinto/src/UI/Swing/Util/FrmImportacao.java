@@ -43,7 +43,6 @@ public class FrmImportacao extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Importar");
-        setAlwaysOnTop(true);
         setName("frmBase"); // NOI18N
         setResizable(false);
         setType(java.awt.Window.Type.POPUP);
@@ -102,6 +101,7 @@ public class FrmImportacao extends javax.swing.JFrame {
 
     private void btnImportarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnImportarMouseClicked
         actionListener.onSelectFile(new File(txtArquivoSelecionado.getText()));
+        this.dispose();
     }//GEN-LAST:event_btnImportarMouseClicked
 
     private void btnCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseClicked

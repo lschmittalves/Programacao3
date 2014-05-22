@@ -1,7 +1,7 @@
 package UI.Slick.Telas;
 
 import RegraNegocio.Fachada;
-import UI.Slick.ICallBackToContext;
+
 import UI.Slick.Framework.Components.Button;
 import UI.Slick.Framework.Components.IButtonListener;
 import UI.Slick.Framework.Components.ISlickComponent;
@@ -26,13 +26,10 @@ public class MenuSlick extends BasicGameState implements IButtonListener, IFrmAc
     private static final boolean log = false;
     private Image background;
     private TreeMap<String, ISlickComponent> screenComponents;
-    private ICallBackToContext callBackToContext;
 
-    private MenuSlick() {
-    }
 
-    public MenuSlick(ICallBackToContext callBackToContext) {
-        this.callBackToContext = callBackToContext;
+    public MenuSlick() {
+
     }
 
     @Override
@@ -60,7 +57,12 @@ public class MenuSlick extends BasicGameState implements IButtonListener, IFrmAc
         //desenha os componentes
         for (Map.Entry<String, ISlickComponent> entry : screenComponents.entrySet()) {
             String key = entry.getKey();
-            entry.getValue().draw();
+            if (key == "btnPlay") {
+                if(LabirintoSlickMain.getInstance().podeIniciar())
+                    entry.getValue().draw();
+            } else {
+                entry.getValue().draw();
+            }
         }
 
     }
@@ -85,6 +87,7 @@ public class MenuSlick extends BasicGameState implements IButtonListener, IFrmAc
             switch (sender.getId()) {
                 case "btnPlay":
                     LabirintoSlickMain.getInstance().enterState(1);
+                    break;
                 case "btnImportar":
                     new FrmImportacao(this).setVisible(true);
                     break;
@@ -101,7 +104,9 @@ public class MenuSlick extends BasicGameState implements IButtonListener, IFrmAc
     @Override
     public void onSelectFile(File file) {
         try {
-            callBackToContext.salvarLabirinto(new Fachada().criarLabirinto(file.getAbsolutePath()));
+            LabirintoSlickMain.getInstance().salvarLabirinto(new Fachada().criarLabirinto(file.getAbsolutePath()));
+            JOptionPane.showMessageDialog(null, "Labirinto Importado!");
+            
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }

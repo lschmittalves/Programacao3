@@ -18,19 +18,19 @@ import org.newdawn.slick.state.StateBasedGame;
  *
  * @author leonardo.alves
  */
-public class LabirintoSlickMain extends StateBasedGame implements ICallBackToContext{
+public class LabirintoSlickMain extends StateBasedGame {
 
     private static LabirintoSlickMain labirintoSlickUI = null;
     private Labirinto labirinto = null;
     private AppGameContainer app ;
     
     public void run() throws SlickException{
-            app = new AppGameContainer(new LabirintoSlickMain());
+            app = new AppGameContainer(labirintoSlickUI);
             app.setDisplayMode(1024, 768, false);
             app.setShowFPS(false);
-            
             app.setTargetFrameRate(65);
             app.start();
+           
     
     }
     
@@ -46,20 +46,27 @@ public class LabirintoSlickMain extends StateBasedGame implements ICallBackToCon
         // TODO Auto-generated constructor stub
     }
 
+    public boolean podeIniciar(){
+        return labirinto != null;
+    }
+    
+    
     @Override
     public void initStatesList(GameContainer arg0) throws SlickException {
-       addState(new MenuSlick(this));
-       addState(new LabirintoSlick(this));
+            this.addState(new MenuSlick());
+            this.addState(new LabirintoSlick());
 
     }
-
-    @Override
-    public void onOpenScreen() {
    
-    }
-
-    @Override
     public void salvarLabirinto(Labirinto labirinto) {
        this.labirinto = labirinto;
+    }
+
+    public void setTamanhoJanela(int width, int height) throws SlickException{
+       app.setDisplayMode(width, height, false);
+    }
+
+    public Labirinto getLabirinto() {
+        return labirinto;
     }
 }
