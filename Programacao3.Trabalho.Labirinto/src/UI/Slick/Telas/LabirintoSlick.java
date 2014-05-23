@@ -108,11 +108,7 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener {
             x += delta * 0.1f;
 
         }
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(LabirintoSlick.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }
 
     @Override
