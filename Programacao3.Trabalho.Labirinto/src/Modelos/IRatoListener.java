@@ -17,4 +17,6 @@ public interface IRatoListener {
 
 	/** Metodo que e disparado quando o rato chega a saida do labirinto. */
 	public void onFinish();
+        
+       
 }

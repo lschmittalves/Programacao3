@@ -5,15 +5,18 @@
  */
 package UI.Slick.Telas;
 
-import Modelos.EnumTipoObstaculo;
+import Modelos.EnumCores;
+import Modelos.IRatoListener;
 import Modelos.Labirinto;
+import Modelos.Rato;
+import RegraNegocio.Fachada;
+import RegraNegocio.IFachada;
 import UI.Slick.Framework.Components.BackGround;
 import UI.Slick.Framework.Components.Button;
 import UI.Slick.Framework.Components.IButtonListener;
 import UI.Slick.Framework.Components.ISlickComponent;
 import UI.Slick.LabirintoSlickMain;
 import java.util.LinkedList;
-import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.newdawn.slick.Animation;
@@ -30,11 +33,16 @@ import org.newdawn.slick.state.StateBasedGame;
  *
  * @author leonardo.alves
  */
-public class LabirintoSlick extends BasicGameState implements IButtonListener {
+public class LabirintoSlick extends BasicGameState implements IButtonListener, IRatoListener {
 
+    private static final int TAMANHO_SPRITE = 30;
     private Animation sprite, up, down, left, right;
     private LinkedList<ISlickComponent> screenComponents;
-    private float x = 34f, y = 34f;
+    private float posAtualRatoX = 0, posAtualRatoY = 0;
+    private Labirinto labirinto;
+    private Rato rato;
+    private static final float MARGEM_ERRO_PARAMAIS = 1.001f;
+    private static final float MARGEM_ERRO_PARAMENOS = 0.999f;
 
     public LabirintoSlick() {
         screenComponents = new LinkedList<>();
@@ -61,6 +69,13 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener {
         Image[] movementRight = {new Image("data/sprites/stuart_rgt_1.png"), new Image("data/sprites/stuart_rgt_2.png"), new Image("data/sprites/stuart_rgt_3.png"), new Image("data/sprites/stuart_rgt_4.png"), new Image("data/sprites/stuart_rgt_5.png"), new Image("data/sprites/stuart_rgt_6.png"), new Image("data/sprites/stuart_rgt_7.png")};
         int[] duration = {100, 100, 100, 100, 100, 100, 100};
 
+        labirinto = LabirintoSlickMain.getInstance().getLabirinto();
+        rato = labirinto.getRato();
+        rato.addListener(this);
+
+        posAtualRatoX = rato.getPosXInicial()*30;
+        posAtualRatoY = rato.getPosYInicial()*30;
+
         up = new Animation(movementUp, duration, false);
         down = new Animation(movementDown, duration, false);
         left = new Animation(movementLeft, duration, false);
@@ -68,6 +83,10 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener {
 
         // Original orientation of the sprite. It will look right.
         sprite = right;
+
+        IFachada regraNegocio = new Fachada();
+        regraNegocio.procurarSaida(labirinto);
+
     }
 
     @Override
@@ -76,37 +95,15 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener {
         for (int i = 0; i < screenComponents.size(); i++) {
             screenComponents.get(i).draw();
         }
-        sprite.draw((int) x, (int) y);
+        sprite.draw((int) posAtualRatoX, (int) posAtualRatoY);
     }
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
-        Input input = gc.getInput();
-        if (input.isKeyDown(Input.KEY_UP)) {
-            sprite = up;
-
-            sprite.update(delta);
-            // The lower the delta the slowest the sprite will animate.
-            y -= delta * 0.1f;
-
-        } else if (input.isKeyDown(Input.KEY_DOWN)) {
-            sprite = down;
-
-            sprite.update(delta);
-            y += delta * 0.1f;
-
-        } else if (input.isKeyDown(Input.KEY_LEFT)) {
-            sprite = left;
-
-            sprite.update(delta);
-            x -= delta * 0.1f;
-
-        } else if (input.isKeyDown(Input.KEY_RIGHT)) {
-            sprite = right;
-
-            sprite.update(delta);
-            x += delta * 0.1f;
-
+        try {
+            andar(delta);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(LabirintoSlick.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -126,11 +123,11 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener {
 
         for (int i = 0; i < labirinto.getMatrizObstaculos().size(); i++) {
 
-            int y = i * 30;
+            int y = i * TAMANHO_SPRITE;
 
             for (int j = 0; j < labirinto.getMatrizObstaculos().get(i).size(); j++) {
 
-                int x = j * 30;
+                int x = j * TAMANHO_SPRITE;
                 switch (labirinto.getMatrizObstaculos().get(i).get(j)) {
                     case ARMADILHA:
                         screenComponents.add(new BackGround(x, y, "data/sprites/spriteArmadilha.png"));
@@ -160,10 +157,109 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener {
 
     private void setTamanhoTela() throws SlickException {
 
-        int height = LabirintoSlickMain.getInstance().getLabirinto().getNoLinhas() * 30;
-        int width = LabirintoSlickMain.getInstance().getLabirinto().getNoColunas() * 30;
+        int height = LabirintoSlickMain.getInstance().getLabirinto().getNoLinhas() * TAMANHO_SPRITE;
+        int width = LabirintoSlickMain.getInstance().getLabirinto().getNoColunas() * TAMANHO_SPRITE;
         LabirintoSlickMain.getInstance().setTamanhoJanela(width, height);
 
+    }
+
+    private float getPosXNaTelaByLabirinto() {
+        return rato.getProximaPosicaoX() * 30;
+    }
+
+    private float getPosYNaTelaByLabirinto() {
+        return rato.getProximaPosicaoY() * 30;
+    }
+
+    private void andar(int delta) throws InterruptedException {
+
+        switch (rato.getMovimentoByPosition(rato.getProximaPosicaoX(), rato.getProximaPosicaoY())) {
+            case FRENTE:
+
+                sprite = up;
+
+                sprite.update(delta);
+                // The lower the delta the slowest the sprite will animate.
+                posAtualRatoY -= delta * 0.3f;
+                //   System.out.println("(" + posAtualRatoX + "," + posAtualRatoY + ")");
+                updateProximoMovimentoY();
+                Thread.sleep(100);
+                break;
+            case ATRAS:
+                sprite = down;
+
+                sprite.update(delta);
+                posAtualRatoY += delta * 0.1f;
+
+                //   System.out.println("(" + posAtualRatoX + "," + posAtualRatoY + ")");
+                updateProximoMovimentoY();
+                Thread.sleep(100);
+                break;
+            case ESQUERDA :
+                sprite = left;
+
+                sprite.update(delta);
+                posAtualRatoX -= delta * 0.1f;
+                //    System.out.print("(" + posAtualRatoX + "," + posAtualRatoY + ")");
+                updateProximoMovimentoX();
+                Thread.sleep(100);
+                break;
+            case DIREITA:
+                sprite = right;
+
+                sprite.update(delta);
+                posAtualRatoX += delta * 0.1f;
+                //    System.out.println("(" + posAtualRatoX + "," + posAtualRatoY + ")");
+                updateProximoMovimentoX();
+                Thread.sleep(100);
+                break;
+
+        }
+
+    }
+
+    private void updateProximoMovimentoX() {
+
+         
+        if ((getPosXNaTelaByLabirinto() * MARGEM_ERRO_PARAMENOS <= posAtualRatoX) && (getPosXNaTelaByLabirinto() * MARGEM_ERRO_PARAMAIS <= posAtualRatoX)) {
+            rato.removerPrimeiroMovimento();
+        }
+
+    }
+
+    private void updateProximoMovimentoY() {
+
+        System.err.println("ERRO_MENOS: "+(getPosYNaTelaByLabirinto() * MARGEM_ERRO_PARAMENOS)+" | ERRO_MAIS: "+(getPosYNaTelaByLabirinto() * MARGEM_ERRO_PARAMAIS)+" | ATUAL: "+getPosYNaTelaByLabirinto()); 
+    
+        
+        if ((getPosYNaTelaByLabirinto() * MARGEM_ERRO_PARAMENOS <= posAtualRatoY) && (getPosYNaTelaByLabirinto() * MARGEM_ERRO_PARAMAIS <= posAtualRatoY)) {
+            rato.removerPrimeiroMovimento();
+        }
+    }
+
+    @Override
+    public void onMove(StringBuilder labirinto) {
+        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void onChangeColor(EnumCores newColor) {
+        //    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void onDead() {
+        //   throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void onEat(int noQueijos) {
+        //   throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void onFinish() {
+        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
