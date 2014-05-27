@@ -24,7 +24,6 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -41,8 +40,8 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
     private float posAtualRatoX = 0, posAtualRatoY = 0;
     private Labirinto labirinto;
     private Rato rato;
-    private static final float MARGEM_ERRO_PARAMAIS = 1.001f;
-    private static final float MARGEM_ERRO_PARAMENOS = 0.999f;
+    private static final float MARGEM_ERRO_PARAMAIS = 1.15f;
+    private static final float MARGEM_ERRO_PARAMENOS = 0.99f;
 
     public LabirintoSlick() {
         screenComponents = new LinkedList<>();
@@ -73,8 +72,8 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
         rato = labirinto.getRato();
         rato.addListener(this);
 
-        posAtualRatoX = rato.getPosXInicial()*30;
-        posAtualRatoY = rato.getPosYInicial()*30;
+        posAtualRatoX = rato.getPosXInicial() * 30;
+        posAtualRatoY = rato.getPosYInicial() * 30;
 
         up = new Animation(movementUp, duration, false);
         down = new Animation(movementDown, duration, false);
@@ -164,54 +163,45 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
     }
 
     private float getPosXNaTelaByLabirinto() {
-        return rato.getProximaPosicaoX() * 30;
+        return (rato.getProximaPosicaoX()* 30)-30;
     }
 
     private float getPosYNaTelaByLabirinto() {
-        return rato.getProximaPosicaoY() * 30;
+        return (rato.getProximaPosicaoY() * 30)-30;
     }
 
     private void andar(int delta) throws InterruptedException {
 
+       // System.err.println(rato.getMovimentoByPosition(rato.getProximaPosicaoX(), rato.getProximaPosicaoY()));
         switch (rato.getMovimentoByPosition(rato.getProximaPosicaoX(), rato.getProximaPosicaoY())) {
             case FRENTE:
-
                 sprite = up;
 
                 sprite.update(delta);
-                // The lower the delta the slowest the sprite will animate.
-                posAtualRatoY -= delta * 0.3f;
-                //   System.out.println("(" + posAtualRatoX + "," + posAtualRatoY + ")");
+                posAtualRatoY -= delta * 0.1f;
+
                 updateProximoMovimentoY();
-                Thread.sleep(100);
                 break;
             case ATRAS:
                 sprite = down;
 
                 sprite.update(delta);
                 posAtualRatoY += delta * 0.1f;
-
-                //   System.out.println("(" + posAtualRatoX + "," + posAtualRatoY + ")");
                 updateProximoMovimentoY();
-                Thread.sleep(100);
                 break;
-            case ESQUERDA :
+            case ESQUERDA:
                 sprite = left;
 
                 sprite.update(delta);
-                posAtualRatoX -= delta * 0.1f;
-                //    System.out.print("(" + posAtualRatoX + "," + posAtualRatoY + ")");
+                posAtualRatoX -= delta * 0.1f;     
                 updateProximoMovimentoX();
-                Thread.sleep(100);
                 break;
             case DIREITA:
                 sprite = right;
 
                 sprite.update(delta);
                 posAtualRatoX += delta * 0.1f;
-                //    System.out.println("(" + posAtualRatoX + "," + posAtualRatoY + ")");
                 updateProximoMovimentoX();
-                Thread.sleep(100);
                 break;
 
         }
@@ -219,9 +209,9 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
     }
 
     private void updateProximoMovimentoX() {
-
-         
+       System.err.println("X | ERRO_MENOS: "+(getPosXNaTelaByLabirinto() * MARGEM_ERRO_PARAMENOS)+" | ERRO_MAIS: "+(getPosXNaTelaByLabirinto() * MARGEM_ERRO_PARAMAIS)+" | ATUAL: "+posAtualRatoX);
         if ((getPosXNaTelaByLabirinto() * MARGEM_ERRO_PARAMENOS <= posAtualRatoX) && (getPosXNaTelaByLabirinto() * MARGEM_ERRO_PARAMAIS <= posAtualRatoX)) {
+              
             rato.removerPrimeiroMovimento();
         }
 
@@ -229,17 +219,16 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
 
     private void updateProximoMovimentoY() {
 
-        System.err.println("ERRO_MENOS: "+(getPosYNaTelaByLabirinto() * MARGEM_ERRO_PARAMENOS)+" | ERRO_MAIS: "+(getPosYNaTelaByLabirinto() * MARGEM_ERRO_PARAMAIS)+" | ATUAL: "+getPosYNaTelaByLabirinto()); 
-    
-        
+        System.err.println("Y | ERRO_MENOS: "+(getPosYNaTelaByLabirinto() * MARGEM_ERRO_PARAMENOS)+" | ERRO_MAIS: "+(getPosYNaTelaByLabirinto() * MARGEM_ERRO_PARAMAIS)+" | ATUAL: "+posAtualRatoY); 
         if ((getPosYNaTelaByLabirinto() * MARGEM_ERRO_PARAMENOS <= posAtualRatoY) && (getPosYNaTelaByLabirinto() * MARGEM_ERRO_PARAMAIS <= posAtualRatoY)) {
+            
             rato.removerPrimeiroMovimento();
         }
     }
 
     @Override
     public void onMove(StringBuilder labirinto) {
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
     }
 
     @Override
