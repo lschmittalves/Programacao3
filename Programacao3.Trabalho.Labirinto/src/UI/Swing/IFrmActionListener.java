@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package UI.Swing.Util;
+package UI.Swing;
 
 import java.io.File;
 

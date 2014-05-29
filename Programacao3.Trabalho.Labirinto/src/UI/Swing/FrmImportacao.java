@@ -1,4 +1,4 @@
-package UI.Swing.Util;
+package UI.Swing;
 
 import java.awt.Dimension;
 import java.awt.HeadlessException;

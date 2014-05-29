@@ -4,6 +4,7 @@ import Modelos.EnumCores;
 import Modelos.EnumDirecoes;
 import Modelos.EnumTipoObstaculo;
 import Modelos.Labirinto;
+import Modelos.Movimento;
 import Modelos.Obstaculo;
 import Modelos.Rato;
 import org.joda.time.DateTime;
@@ -210,7 +211,9 @@ public class RatoRN {
 //		}
         labirinto.getRato().setPosicaoX(posXNovaRato);
         labirinto.getRato().setPosicaoY(posYNovaRato);
+        labirinto.getRato().addMovimento(new Movimento(direcao, posXNovaRato, posYNovaRato));
 
+        
         if (gravarDirecao) {
             labirinto.getRato().addDirecaoPercorrida(direcao, posXNovaRato,
                     posYNovaRato);

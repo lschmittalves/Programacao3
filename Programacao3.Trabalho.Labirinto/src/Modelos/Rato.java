@@ -16,10 +16,9 @@ public class Rato {
     /**
      * Propriedade posicao da linha.
      */
-    
     private int posXInicial;
     private int posYInicial;
-    
+
     private boolean vivo;
     /**
      * Propriedade cor do rato, definidas no EnumCores.
@@ -54,7 +53,7 @@ public class Rato {
      */
     private LinkedList<EnumDirecoes> listDirecoesPercorridas;
 
-    private Queue<int[]> filaDeMovimentos;
+    private Queue<Movimento> filaDeMovimentos;
 
     public Rato(int posX, int posY) {
         this.posicaoX = posX;
@@ -64,8 +63,9 @@ public class Rato {
         this.dataInicio = DateTime.now();
         this.listDirecoesPercorridas = new LinkedList<>();
         this.filaDeMovimentos = new LinkedList();
-        this.posXInicial=posX;
-        this.posYInicial=posY;
+        //   filaDeMovimentos.add(new int[]{posX,posY});
+        this.posXInicial = posX;
+        this.posYInicial = posY;
     }
 
     @SuppressWarnings("unused")
@@ -226,8 +226,7 @@ public class Rato {
          */
         this.listDirecoesPercorridas.add(direcao);
 
-        int[] arrayPos = {posX, posY};
-        this.filaDeMovimentos.add(arrayPos);
+       
     }
 
     /**
@@ -236,6 +235,12 @@ public class Rato {
      * percorrida anteriormente.
      *
      */
+    
+    public void addMovimento(Movimento posicao){
+    
+         this.filaDeMovimentos.add(posicao);
+    }
+    
     public EnumDirecoes getLastDirection() {
 
         if (listDirecoesPercorridas.size() == 0) {
@@ -258,26 +263,24 @@ public class Rato {
     }
 
     public int getProximaPosicaoX() {
-        return this.filaDeMovimentos.peek()[0];
+        return this.filaDeMovimentos.peek().getPosX();
+
+    }
+
+    public int getProximaPosicaoY() {
+        return this.filaDeMovimentos.peek().getPosY();
+
+    }
+
+    public EnumDirecoes getProxMovimento() {
+        return this.filaDeMovimentos.peek().getDirecoes();
 
     }
     
-    public int getProximaPosicaoY() {
-        return this.filaDeMovimentos.peek()[1];
-
+    public String getProxPos(){
+        return "{"+this.filaDeMovimentos.peek().getPosX()+","+this.filaDeMovimentos.peek().getPosY()+"| "+this.filaDeMovimentos.peek().getDirecoes()+"} size: "+filaDeMovimentos.size();
     }
-
-    public EnumDirecoes getMovimentoByPosition(int posX, int posY) {
-
-        if (this.direcoesPercorridas.containsKey(posY)) {
-            if (this.direcoesPercorridas.get(posY).containsKey(posX)) {
-                return this.direcoesPercorridas.get(posY).get(posX);
-            }
-        }
-        return null;
-
-    }
-
+    
     /**
      * @return the posXInicial
      */
