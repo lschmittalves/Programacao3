@@ -16,12 +16,10 @@ import UI.Slick.Framework.Components.Button;
 import UI.Slick.Framework.Components.IButtonListener;
 import UI.Slick.Framework.Components.ISlickComponent;
 import UI.Slick.LabirintoSlickMain;
-import UI.Util.PIDController;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.newdawn.slick.Animation;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
