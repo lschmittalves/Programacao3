@@ -6,7 +6,7 @@
 package UI.Slick.Framework.Components;
 
 import Modelos.EnumDirecoes;
-import Modelos.RatoMovimento;
+import Modelos.EnumEventos;
 import Modelos.Rato;
 import Modelos.RatoAcao;
 import java.util.LinkedList;
@@ -35,7 +35,6 @@ public class Stuart {
     private float posAtualRatoX;
     private float posAtualRatoY;
 
-    private Queue<RatoMovimento> filaDeMovimentos;
     private Queue<RatoAcao> filaDeAcoe;
 
     public Stuart(Rato rato, float tamanhoSprite) throws SlickException {
@@ -54,20 +53,36 @@ public class Stuart {
         this.posAtualRatoX = rato.getPosXInicial() * tamanhoSprite;
         this.posAtualRatoY = rato.getPosYInicial() * tamanhoSprite;
 
-        this.filaDeMovimentos = new LinkedList();
-        this.filaDeAcoe = new LinkedList();
+        this.filaDeAcoe = rato.getFilaDeAcoe();
 
     }
 
-    public Animation andar(int delta) throws InterruptedException {
+    public Animation getProxMovimento(int delta) throws InterruptedException {
 
-        Modelos.RatoMovimento proxMovimento = this.filaDeMovimentos.peek();
+        if (filaDeAcoe != null && filaDeAcoe.size() != 0) {
 
-        if (proxMovimento == null) {
-            return null;
+            Modelos.RatoAcao proxAcao = filaDeAcoe.peek();
+
+            switch (proxAcao.getEvento()) {
+                case MOVE:
+                    return andar(proxAcao, delta);
+                case CHANGECOLOR:
+                    break;
+                case DEAD:
+                    break;
+                case EAT:
+                    break;
+                case FINISH:
+                    break;
+
+            }
         }
+        return null;
 
-        switch (proxMovimento.getDirecoes()) {
+    }
+
+    private Animation andar(RatoAcao proxAcao, int delta) {
+        switch (proxAcao.getDirecoes()) {
             case FRENTE:
                 andarFrente(delta);
                 return up;
@@ -81,8 +96,23 @@ public class Stuart {
                 andarDireita(delta);
                 return right;
         }
-
         return null;
+    }
+
+    public EnumEventos checkAction() {
+
+        if (filaDeAcoe != null && filaDeAcoe.size() != 0) {
+
+            RatoAcao proxAcao = filaDeAcoe.peek();
+
+            if (getPosXNaTelaByLabirinto() == proxAcao.getPosX() && getPosAtualRatoY() == proxAcao.getPosY()) {
+                return proxAcao.getEvento();
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
 
     }
 
@@ -115,10 +145,10 @@ public class Stuart {
         if ((getPosXNaTelaByLabirinto() * MARGEM_ERRO_PARAMENOS <= posAtualRatoX) && (getPosXNaTelaByLabirinto() * MARGEM_ERRO_PARAMAIS >= posAtualRatoX)) {
             //debug
             System.err.println("X | ERRO_MENOS: " + (getPosXNaTelaByLabirinto() * MARGEM_ERRO_PARAMENOS) + " | ERRO_MAIS: " + (getPosXNaTelaByLabirinto() * MARGEM_ERRO_PARAMAIS) + " | ATUAL: " + posAtualRatoX);
-            System.err.println("X|" + filaDeMovimentos.peek().getDirecoes() + " " + filaDeMovimentos.peek().getPosX());
+            System.err.println("X|" + filaDeAcoe.peek().getDirecoes() + " " + filaDeAcoe.peek().getPosX());
 
             posAtualRatoX = getPosXNaTelaByLabirinto();
-            filaDeMovimentos.remove();
+            filaDeAcoe.remove();
 
         }
 
@@ -129,44 +159,34 @@ public class Stuart {
         if ((getPosYNaTelaByLabirinto() * MARGEM_ERRO_PARAMENOS <= posAtualRatoY) && (getPosYNaTelaByLabirinto() * MARGEM_ERRO_PARAMAIS >= posAtualRatoY)) {
             //debug
             System.err.println("Y | ERRO_MENOS: " + (getPosYNaTelaByLabirinto() * MARGEM_ERRO_PARAMENOS) + " | ERRO_MAIS: " + (getPosYNaTelaByLabirinto() * MARGEM_ERRO_PARAMAIS) + " | ATUAL: " + posAtualRatoY);
-            System.err.println("Y |" + filaDeMovimentos.peek().getDirecoes() + " " + filaDeMovimentos.peek().getPosY());
+            System.err.println("Y |" + filaDeAcoe.peek().getDirecoes() + " " + filaDeAcoe.peek().getPosY());
 
             posAtualRatoY = getPosYNaTelaByLabirinto();
-            filaDeMovimentos.remove();
+            filaDeAcoe.remove();
 
         }
     }
 
     private float getPosXNaTelaByLabirinto() {
 
-        if (filaDeMovimentos.peek() == null) {
+        if (filaDeAcoe.peek() == null) {
             return posAtualRatoX;
         }
 
-        return (filaDeMovimentos.peek().getPosX() * tamanhoSprite);
+        return (filaDeAcoe.peek().getPosX() * tamanhoSprite);
     }
 
     private float getPosYNaTelaByLabirinto() {
 
-        if (filaDeMovimentos.peek() == null) {
+        if (filaDeAcoe.peek() == null) {
             return posAtualRatoY;
         }
 
-        return (filaDeMovimentos.peek().getPosY() * tamanhoSprite);
+        return (filaDeAcoe.peek().getPosY() * tamanhoSprite);
     }
 
     private String getProxPos() {
-        return "{" + this.filaDeMovimentos.peek().getPosX() + "," + this.filaDeMovimentos.peek().getPosY() + "| " + this.filaDeMovimentos.peek().getDirecoes() + "} size: " + filaDeMovimentos.size();
-    }
-
-    public void addMovimento(RatoMovimento posicao) {
-
-        this.filaDeMovimentos.add(posicao);
-    }
-
-    public void addAcao(RatoAcao acao) {
-        this.filaDeAcoe.add(acao);
-
+        return "{" + this.filaDeAcoe.peek().getPosX() + "," + this.filaDeAcoe.peek().getPosY() + "| " + this.filaDeAcoe.peek().getDirecoes() + "} size: " + filaDeAcoe.size();
     }
 
     public Animation getAnimationUp() {

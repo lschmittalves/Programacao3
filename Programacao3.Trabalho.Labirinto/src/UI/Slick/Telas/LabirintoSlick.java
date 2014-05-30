@@ -1,10 +1,11 @@
-
 package UI.Slick.Telas;
 
 import Modelos.EnumCores;
 import Modelos.EnumDirecoes;
+import Modelos.EnumEventos;
 import Modelos.IRatoListener;
 import Modelos.Labirinto;
+import Modelos.RatoAcao;
 import RegraNegocio.Fachada;
 import RegraNegocio.IFachada;
 import UI.Slick.Framework.Components.BackGround;
@@ -29,7 +30,7 @@ import org.newdawn.slick.state.StateBasedGame;
  *
  * @author leonardo.alves
  */
-public class LabirintoSlick extends BasicGameState implements IButtonListener, IRatoListener {
+public class LabirintoSlick extends BasicGameState implements IButtonListener {
 
     private static final int TAMANHO_SPRITE = 30;
     private Animation sprite;
@@ -42,75 +43,8 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
     public LabirintoSlick() {
         screenComponents = new LinkedList<>();
     }
-
-    @Override
-    public int getID() {
-        // TODO Auto-generated method stub
-        return 1;
-    }
-
-    @Override
-    public void init(GameContainer gc, StateBasedGame sbg) {
-
-    }
-
-    @Override
-    public void enter(GameContainer container, StateBasedGame game) throws SlickException {
-        try {
-
-            IFachada regraNegocio = new Fachada();
-
-            labirinto = LabirintoSlickMain.getInstance().getLabirinto();
-             gerarBackground();
-      
-            labirinto.getRato().addListener(this);
-            stuart = new Stuart(labirinto.getRato(), TAMANHO_SPRITE);
-
-            // Original orientation of the sprite. It will look right.
-            sprite = stuart.getAnimationRight();
-
-            regraNegocio.procurarSaida(labirinto);
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-    }
-
-    @Override
-    public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) {
-        try {
-            setTamanhoTela();
-          
-            grphcs.setBackground(Color.white);
-            
-            for (int i = 0; i < screenComponents.size(); i++) {
-                screenComponents.get(i).draw();
-            }
-            sprite.draw((int) stuart.getPosAtualRatoX(), (int) stuart.getPosAtualRatoY());
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-    }
-
-    @Override
-    public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
-        try {
-          sprite=  stuart.andar(delta);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-
-    }
-
-    @Override
-    public void onClick(Button sender) {
-        try {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-    }
-
+    
+    
     private void gerarBackground() throws SlickException {
 
         if (labirinto == null) {
@@ -160,53 +94,73 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
     }
 
     @Override
-    public void onMove(StringBuilder labirinto) {
+    public int getID() {
+        // TODO Auto-generated method stub
+        return 1;
+    }
+
+    @Override
+    public void init(GameContainer gc, StateBasedGame sbg) {
+
+    }
+
+    @Override
+    public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         try {
+
+            IFachada regraNegocio = new Fachada();
+
+            labirinto = LabirintoSlickMain.getInstance().getLabirinto();
+            gerarBackground();
+
+            stuart = new Stuart(labirinto.getRato(), TAMANHO_SPRITE);
+
+            // Original orientation of the sprite. It will look right.
+            sprite = stuart.getAnimationRight();
+
+            regraNegocio.procurarSaida(labirinto);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+
+    @Override
+    public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) {
+        try {
+            setTamanhoTela();
+
+            grphcs.setBackground(Color.white);
+
+            for (int i = 0; i < screenComponents.size(); i++) {
+                screenComponents.get(i).draw();
+            }
+            sprite.draw((int) stuart.getPosAtualRatoX(), (int) stuart.getPosAtualRatoY());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+
+    @Override
+    public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+        try {
+            sprite = stuart.getProxMovimento(delta);
             
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
+
     }
+    
 
     @Override
-    public void onChangeColor(EnumCores newColor) {
+    public void onClick(Button sender) {
         try {
-        
-            stuart.addAcao(null);
-            
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
 
-    @Override
-    public void onDead() {
-        try {
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-    }
-
-    @Override
-    public void onEat(int noQueijos) {
-        try {
-            
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-    }
-
-    @Override
-    public void onFinish() {
-        try {
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-    }
-
-    @Override
-    public void onMove(Modelos.RatoMovimento movimento) {
-       stuart.addMovimento(movimento);
-    }
 
 }

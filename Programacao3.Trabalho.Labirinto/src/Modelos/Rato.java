@@ -53,7 +53,7 @@ public class Rato {
      */
     private LinkedList<EnumDirecoes> listDirecoesPercorridas;
 
-
+    private Queue<RatoAcao> filaDeAcoes;
 
     public Rato(int posX, int posY) {
         this.posicaoX = posX;
@@ -62,8 +62,8 @@ public class Rato {
         this.cor = EnumCores.BRANCO;
         this.dataInicio = DateTime.now();
         this.listDirecoesPercorridas = new LinkedList<>();
-      
-        //   filaDeMovimentos.add(new int[]{posX,posY});
+                
+        this.filaDeAcoes = new LinkedList();
         this.posXInicial = posX;
         this.posYInicial = posY;
     }
@@ -263,5 +263,19 @@ public class Rato {
      */
     public int getPosYInicial() {
         return posYInicial;
+    }
+    
+     
+
+    public void addAcao(RatoAcao acao) {
+        this.filaDeAcoes.add(acao);
+
+    }
+
+    /**
+     * @return the filaDeAcoe
+     */
+    public Queue<RatoAcao> getFilaDeAcoe() {
+        return filaDeAcoes;
     }
 }

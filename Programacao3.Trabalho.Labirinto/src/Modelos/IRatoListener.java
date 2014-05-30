@@ -6,8 +6,6 @@ public interface IRatoListener {
 	/** Metodo para locomocao do rato. */
 	public void onMove(StringBuilder labirinto);
         
-        /** Metodo para locomocao do rato. */
-	public void onMove(RatoMovimento movimento);
 
 	/** Metodo para alteracao de cor do rato. */
 	public void onChangeColor(EnumCores newColor);

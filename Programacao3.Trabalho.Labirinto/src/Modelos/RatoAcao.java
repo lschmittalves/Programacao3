@@ -13,6 +13,7 @@ package Modelos;
 public class RatoAcao {
   
     private EnumEventos evento;
+    private EnumDirecoes direcoes;
     private int posX;
     private int posY;
 
@@ -24,11 +25,18 @@ public class RatoAcao {
         this.posX = posX;
         this.posY = posY;
     }
+    
+    public RatoAcao(EnumEventos evento,EnumDirecoes direcoes, int posX, int posY) {
+        this.evento = evento;
+        this.posX = posX;
+        this.posY = posY;
+        this.direcoes = direcoes;
+    }
 
     /**
      * @return the direcoes
      */
-    public EnumEventos getDirecoes() {
+    public EnumEventos getEvento() {
         return evento;
     }
 
@@ -44,5 +52,12 @@ public class RatoAcao {
      */
     public int getPosY() {
         return posY;
+    }
+
+    /**
+     * @return the ratoDirecoes
+     */
+    public EnumDirecoes getDirecoes() {
+        return direcoes;
     }
 }
