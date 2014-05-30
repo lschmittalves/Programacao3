@@ -4,7 +4,7 @@ import Modelos.EnumCores;
 import Modelos.EnumDirecoes;
 import Modelos.EnumTipoObstaculo;
 import Modelos.Labirinto;
-import Modelos.Movimento;
+import Modelos.RatoMovimento;
 import Modelos.Obstaculo;
 import Modelos.Rato;
 import org.joda.time.DateTime;
@@ -211,17 +211,15 @@ public class RatoRN {
 //		}
         labirinto.getRato().setPosicaoX(posXNovaRato);
         labirinto.getRato().setPosicaoY(posYNovaRato);
-        labirinto.getRato().addMovimento(new Movimento(direcao, posXNovaRato, posYNovaRato));
 
-        
         if (gravarDirecao) {
             labirinto.getRato().addDirecaoPercorrida(direcao, posXNovaRato,
                     posYNovaRato);
         }
 
         if (labirinto.getRato().getRatoListener() != null) {
-            labirinto.getRato().getRatoListener()
-                    .onMove(new LabirintoRN().labirintoToPrint(labirinto));
+            labirinto.getRato().getRatoListener().onMove(new LabirintoRN().labirintoToPrint(labirinto));
+            labirinto.getRato().getRatoListener().onMove(new RatoMovimento(direcao, posXNovaRato, posYNovaRato));
         }
     }
     /* Método proximaPosicaoEmY, extraido do código que contém o Switch dentro do método moverRato.

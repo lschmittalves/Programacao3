@@ -31,6 +31,7 @@ public class LabirintoSlickMain extends StateBasedGame {
             app.setTargetFrameRate(65);
             app.start();
            
+           
     
     }
     

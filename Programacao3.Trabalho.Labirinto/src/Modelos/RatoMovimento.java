@@ -3,13 +3,15 @@
 package Modelos;
 
 
-public class Movimento {
+public class RatoMovimento {
     
     private EnumDirecoes direcoes;
     private int posX;
     private int posY;
 
-    public Movimento(EnumDirecoes direcoes, int posX, int posY) {
+    private RatoMovimento(){}
+    
+    public RatoMovimento(EnumDirecoes direcoes, int posX, int posY) {
         this.direcoes = direcoes;
         this.posX = posX;
         this.posY = posY;

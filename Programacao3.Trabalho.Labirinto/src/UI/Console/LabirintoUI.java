@@ -3,6 +3,7 @@ package UI.Console;
 import Modelos.EnumCores;
 import Modelos.IRatoListener;
 import Modelos.Labirinto;
+import Modelos.RatoMovimento;
 import RegraNegocio.Fachada;
 import RegraNegocio.IFachada;
 import javax.swing.JOptionPane;
@@ -87,4 +88,9 @@ public class LabirintoUI implements IRatoListener {
 		System.out.println();
 		System.out.println("Ahhhh, cabo.");
 	}
+
+    @Override
+    public void onMove(RatoMovimento movimento) {
+       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

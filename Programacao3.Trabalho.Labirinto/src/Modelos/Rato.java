@@ -53,7 +53,7 @@ public class Rato {
      */
     private LinkedList<EnumDirecoes> listDirecoesPercorridas;
 
-    private Queue<Movimento> filaDeMovimentos;
+
 
     public Rato(int posX, int posY) {
         this.posicaoX = posX;
@@ -62,7 +62,7 @@ public class Rato {
         this.cor = EnumCores.BRANCO;
         this.dataInicio = DateTime.now();
         this.listDirecoesPercorridas = new LinkedList<>();
-        this.filaDeMovimentos = new LinkedList();
+      
         //   filaDeMovimentos.add(new int[]{posX,posY});
         this.posXInicial = posX;
         this.posYInicial = posY;
@@ -235,12 +235,7 @@ public class Rato {
      * percorrida anteriormente.
      *
      */
-    
-    public void addMovimento(Movimento posicao){
-    
-         this.filaDeMovimentos.add(posicao);
-    }
-    
+      
     public EnumDirecoes getLastDirection() {
 
         if (listDirecoesPercorridas.size() == 0) {
@@ -249,7 +244,6 @@ public class Rato {
 
         return listDirecoesPercorridas.getLast();
     }
-
     /**
      * Remove a ultima direcao percorrida pelo rato.
      */
@@ -257,30 +251,6 @@ public class Rato {
 
         listDirecoesPercorridas.removeLast();
     }
-
-    public void removerPrimeiroMovimento() {
-        filaDeMovimentos.remove();
-    }
-
-    public int getProximaPosicaoX() {
-        return this.filaDeMovimentos.peek().getPosX();
-
-    }
-
-    public int getProximaPosicaoY() {
-        return this.filaDeMovimentos.peek().getPosY();
-
-    }
-
-    public EnumDirecoes getProxMovimento() {
-        return this.filaDeMovimentos.peek().getDirecoes();
-
-    }
-    
-    public String getProxPos(){
-        return "{"+this.filaDeMovimentos.peek().getPosX()+","+this.filaDeMovimentos.peek().getPosY()+"| "+this.filaDeMovimentos.peek().getDirecoes()+"} size: "+filaDeMovimentos.size();
-    }
-    
     /**
      * @return the posXInicial
      */
