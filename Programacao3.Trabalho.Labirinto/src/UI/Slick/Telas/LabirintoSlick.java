@@ -30,6 +30,9 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
     private static final int TAMANHO_SPRITE = 30;
     private Animation sprite;
     private Stuart stuart;
+  
+    private int height;
+    private int width;
 
     private LinkedList<ISlickComponent> screenComponents;
 
@@ -87,15 +90,15 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
 
     private void setTamanhoTela() throws SlickException {
 
-        int height = (LabirintoSlickMain.getInstance().getLabirinto().getNoLinhas() + 2) * TAMANHO_SPRITE;
-        int width = LabirintoSlickMain.getInstance().getLabirinto().getNoColunas() * TAMANHO_SPRITE;
-        LabirintoSlickMain.getInstance().setTamanhoJanela(width, height);
+         height = (LabirintoSlickMain.getInstance().getLabirinto().getNoLinhas() + 2) * TAMANHO_SPRITE;
+         width = LabirintoSlickMain.getInstance().getLabirinto().getNoColunas() * TAMANHO_SPRITE;
+         LabirintoSlickMain.getInstance().setTamanhoJanela(width, height);
 
     }
 
-    private void  atualizaQueijos(Graphics grac){
+    private void atualizaQueijos(Graphics grac){
     
-        grac.drawString("Repeted Guess!", 60, 170);
+        grac.drawString("Queijos Comidos: "+labirinto.getRato().getQueijosComidos(), height-20, width-20);
     
     }
     
@@ -158,6 +161,7 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
                 screenComponents.get(i).draw();
             }
             sprite.draw((int) stuart.getPosAtualRatoX(), (int) stuart.getPosAtualRatoY());
+            atualizaQueijos(grphcs);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
