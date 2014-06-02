@@ -1,11 +1,6 @@
 package UI.Slick.Telas;
 
-import Modelos.EnumCores;
-import Modelos.EnumDirecoes;
-import Modelos.EnumEventos;
-import Modelos.IRatoListener;
 import Modelos.Labirinto;
-import Modelos.RatoAcao;
 import RegraNegocio.Fachada;
 import RegraNegocio.IFachada;
 import UI.Slick.Framework.Components.BackGround;
@@ -16,7 +11,6 @@ import UI.Slick.Framework.Components.IStuartListener;
 import UI.Slick.Framework.Components.Snake;
 import UI.Slick.Framework.Components.Stuart;
 import UI.Slick.LabirintoSlickMain;
-import java.awt.Graphics2D;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 import org.newdawn.slick.Animation;
@@ -51,35 +45,41 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
             return;
         }
 
-        for (int i = 0; i < labirinto.getMatrizObstaculos().size(); i++) {
+        for (int i = 0; i < labirinto.getMatrizObstaculos().size() + 2; i++) {
 
             int y = i * TAMANHO_SPRITE;
 
-            for (int j = 0; j < labirinto.getMatrizObstaculos().get(i).size(); j++) {
-
-                int x = j * TAMANHO_SPRITE;
-                switch (labirinto.getMatrizObstaculos().get(i).get(j)) {
-                    case ARMADILHA:
-                        screenComponents.add(new Snake(x, y));
-                        break;
-                    case ENTRADA:
-                        screenComponents.add(new BackGround(x, y, "data/sprites/spriteEntrada.png"));
-                        break;
-                    case ESPACO_BRANCO:
-                        screenComponents.add(new BackGround(x, y, "data/sprites/spriteFundo.png"));
-                        break;
-                    case PAREDE:
-                        screenComponents.add(new BackGround(x, y, "data/sprites/spriteParede.png"));
-                        break;
-                    case QUEIJO:
-                        screenComponents.add(new BackGround(x, y, "data/sprites/spriteQueijo.png"));
-                        break;
-                    case SAIDA:
-                        screenComponents.add(new BackGround(x, y, "data/sprites/spriteSaida.png"));
-                        break;
-
+            if (i >= labirinto.getMatrizObstaculos().size()) {
+                for (int j = 0; j < labirinto.getMatrizObstaculos().get(labirinto.getMatrizObstaculos().size() - 1).size(); j++) {
+                    int x = j * TAMANHO_SPRITE;
+                    screenComponents.add(new BackGround(x, y, "data/sprites/spriteParede.png"));
                 }
+            } else {
+                for (int j = 0; j < labirinto.getMatrizObstaculos().get(i).size(); j++) {
 
+                    int x = j * TAMANHO_SPRITE;
+                    switch (labirinto.getMatrizObstaculos().get(i).get(j)) {
+                        case ARMADILHA:
+                            screenComponents.add(new Snake(x, y));
+                            break;
+                        case ENTRADA:
+                            screenComponents.add(new BackGround(x, y, "data/sprites/spriteEntrada.png"));
+                            break;
+                        case ESPACO_BRANCO:
+                            screenComponents.add(new BackGround(x, y, "data/sprites/spriteFundo.png"));
+                            break;
+                        case PAREDE:
+                            screenComponents.add(new BackGround(x, y, "data/sprites/spriteParede.png"));
+                            break;
+                        case QUEIJO:
+                            screenComponents.add(new BackGround(x, y, "data/sprites/spriteQueijo.png"));
+                            break;
+                        case SAIDA:
+                            screenComponents.add(new BackGround(x, y, "data/sprites/spriteSaida.png"));
+                            break;
+
+                    }
+                }
             }
         }
 
@@ -87,12 +87,18 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
 
     private void setTamanhoTela() throws SlickException {
 
-        int height = LabirintoSlickMain.getInstance().getLabirinto().getNoLinhas() * TAMANHO_SPRITE;
+        int height = (LabirintoSlickMain.getInstance().getLabirinto().getNoLinhas() + 2) * TAMANHO_SPRITE;
         int width = LabirintoSlickMain.getInstance().getLabirinto().getNoColunas() * TAMANHO_SPRITE;
         LabirintoSlickMain.getInstance().setTamanhoJanela(width, height);
 
     }
 
+    private void  atualizaQueijos(Graphics grac){
+    
+        grac.drawString("Repeted Guess!", 60, 170);
+    
+    }
+    
     @Override
     public int getID() {
         // TODO Auto-generated method stub
@@ -109,7 +115,7 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
 
             IFachada regraNegocio = new Fachada();
 
-            labirinto = LabirintoSlickMain.getInstance().getLabirinto();
+            labirinto = (Labirinto) LabirintoSlickMain.getInstance().getLabirinto().clone();
             gerarBackground();
 
             stuart = new Stuart(labirinto.getRato(), this, TAMANHO_SPRITE);
@@ -125,8 +131,25 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
     }
 
     @Override
+    public void leave(GameContainer container, StateBasedGame game) throws SlickException {
+
+        try {
+            labirinto = null;
+            stuart = null;
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+    }
+
+    @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) {
         try {
+            if (labirinto == null || stuart == null) {
+                return;
+            }
+
             setTamanhoTela();
 
             grphcs.setBackground(Color.white);
@@ -143,6 +166,9 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
         try {
+            if (labirinto == null || stuart == null) {
+                return;
+            }
 
             stuart.verificarProximaAcao(delta);
 
@@ -163,18 +189,30 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
 
     @Override
     public void onDead() {
+        JOptionPane.showMessageDialog(null, "Filho da Puta!!!! Você será redirecionado ao menu pricipal.");
+        LabirintoSlickMain.getInstance().enterState(0);
     }
 
     @Override
     public void onEat() {
+
+        JOptionPane.showMessageDialog(null, "Nossa, já comi " + labirinto.getRato().getQueijosComidos() + ".");
+
     }
 
     @Override
     public void onChangeColor() {
+
+        JOptionPane.showMessageDialog(null, "Finge que mudei de cor.");
+
     }
 
     @Override
     public void onFinish() {
+
+        JOptionPane.showMessageDialog(null, "Encontrei a saida :3! Você será redirecionado ao menu pricipal.");
+        LabirintoSlickMain.getInstance().enterState(0);
+
     }
 
     @Override

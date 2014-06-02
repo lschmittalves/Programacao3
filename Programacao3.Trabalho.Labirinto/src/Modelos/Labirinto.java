@@ -6,7 +6,8 @@ import java.util.TreeMap;
 /**
  * Modelo do labirinto.
  */
-public class Labirinto {
+public class Labirinto implements Cloneable{
+ 
 
     private Rato rato;
 
@@ -21,6 +22,17 @@ public class Labirinto {
         this.obstaculos = obstaculos;
         this.rato = rato;
         this.matrizObstaculos = matrizObstaculos;
+    }
+    
+    
+    public Object clone() {
+        try {
+            return super.clone();
+        }
+        catch (CloneNotSupportedException e) {
+            // This should never happen
+            throw new InternalError(e.toString());
+        }
     }
 
     @SuppressWarnings("unused")

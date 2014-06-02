@@ -67,13 +67,20 @@ public class Stuart {
             switch (proxAcao.getEvento()) {
                 case MOVE:
                     andar(proxAcao, delta);
+                    break;
                 case CHANGECOLOR:
                     break;
                 case DEAD:
+            //        iStuartListener.onDead();
+                    filaDeAcoe.remove();
                     break;
                 case EAT:
+            //        iStuartListener.onEat();
+                    filaDeAcoe.remove();
                     break;
                 case FINISH:
+            //        iStuartListener.onFinish();
+                    filaDeAcoe.remove();
                     break;
 
             }
@@ -144,11 +151,13 @@ public class Stuart {
 
     private void updateProximoMovimentoX() {
 
-        if ((getPosXNaTelaByLabirinto() * MARGEM_ERRO_PARAMENOS <= posAtualRatoX) && (getPosXNaTelaByLabirinto() * MARGEM_ERRO_PARAMAIS >= posAtualRatoX)) {
-            //debug
+              //debug
             System.err.println("X | ERRO_MENOS: " + (getPosXNaTelaByLabirinto() * MARGEM_ERRO_PARAMENOS) + " | ERRO_MAIS: " + (getPosXNaTelaByLabirinto() * MARGEM_ERRO_PARAMAIS) + " | ATUAL: " + posAtualRatoX);
             System.err.println("X|" + filaDeAcoe.peek().getDirecoes() + " " + filaDeAcoe.peek().getPosX());
 
+            
+        if ((getPosXNaTelaByLabirinto() * MARGEM_ERRO_PARAMENOS <= posAtualRatoX) && (getPosXNaTelaByLabirinto() * MARGEM_ERRO_PARAMAIS >= posAtualRatoX)) {
+   
             posAtualRatoX = getPosXNaTelaByLabirinto();
             filaDeAcoe.remove();
 
@@ -158,11 +167,12 @@ public class Stuart {
 
     private void updateProximoMovimentoY() {
 
-        if ((getPosYNaTelaByLabirinto() * MARGEM_ERRO_PARAMENOS <= posAtualRatoY) && (getPosYNaTelaByLabirinto() * MARGEM_ERRO_PARAMAIS >= posAtualRatoY)) {
-            //debug
+          //debug
             System.err.println("Y | ERRO_MENOS: " + (getPosYNaTelaByLabirinto() * MARGEM_ERRO_PARAMENOS) + " | ERRO_MAIS: " + (getPosYNaTelaByLabirinto() * MARGEM_ERRO_PARAMAIS) + " | ATUAL: " + posAtualRatoY);
             System.err.println("Y |" + filaDeAcoe.peek().getDirecoes() + " " + filaDeAcoe.peek().getPosY());
 
+        if ((getPosYNaTelaByLabirinto() * MARGEM_ERRO_PARAMENOS <= posAtualRatoY) && (getPosYNaTelaByLabirinto() * MARGEM_ERRO_PARAMAIS >= posAtualRatoY)) {
+          
             posAtualRatoY = getPosYNaTelaByLabirinto();
             filaDeAcoe.remove();
 

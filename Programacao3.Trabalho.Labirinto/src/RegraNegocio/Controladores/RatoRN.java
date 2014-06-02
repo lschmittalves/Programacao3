@@ -110,8 +110,8 @@ public class RatoRN {
                 case SAIDA:
                     if (labirinto.getRato().getRatoListener() != null) {
                         labirinto.getRato().getRatoListener().onFinish();
-                        labirinto.getRato().addAcao(new RatoAcao(EnumEventos.FINISH, labirinto.getRato().getPosicaoX(), labirinto.getRato().getPosicaoY()));
                     }
+                    labirinto.getRato().addAcao(new RatoAcao(EnumEventos.FINISH, labirinto.getRato().getPosicaoX(), labirinto.getRato().getPosicaoY()));
                     return true;
             }
         }
@@ -219,8 +219,8 @@ public class RatoRN {
 
         if (labirinto.getRato().getRatoListener() != null) {
             labirinto.getRato().getRatoListener().onMove(new LabirintoRN().labirintoToPrint(labirinto));
-            labirinto.getRato().addAcao(new RatoAcao(EnumEventos.MOVE, direcao, posXNovaRato, posYNovaRato));
         }
+        labirinto.getRato().addAcao(new RatoAcao(EnumEventos.MOVE, direcao, posXNovaRato, posYNovaRato));
     }
     /* Método proximaPosicaoEmY, extraido do código que contém o Switch dentro do método moverRato.
      *
@@ -393,8 +393,8 @@ public class RatoRN {
     private void matarRato(Rato rato) {
         if (rato.getRatoListener() != null) {
             rato.getRatoListener().onDead();
-            rato.addAcao(new RatoAcao(EnumEventos.DEAD, rato.getPosicaoX(), rato.getPosicaoY()));
         }
+        rato.addAcao(new RatoAcao(EnumEventos.DEAD, rato.getPosicaoX(), rato.getPosicaoY()));
         rato.setVivo(false);
     }
 
@@ -402,15 +402,15 @@ public class RatoRN {
 
         if (rato.getRatoListener() != null) {
             rato.getRatoListener().onEat(rato.getQueijosComidos());
-            rato.addAcao(new RatoAcao(EnumEventos.EAT, rato.getPosicaoX(), rato.getPosicaoY()));
         }
+        rato.addAcao(new RatoAcao(EnumEventos.EAT, rato.getPosicaoX(), rato.getPosicaoY()));
         rato.incrQueijosComidos();
 
         if (rato.getQueijosComidos() >= 3) {
             if (rato.getRatoListener() != null) {
                 rato.getRatoListener().onChangeColor(EnumCores.VERMELHO);
-                rato.addAcao(new RatoAcao(EnumEventos.CHANGECOLOR, rato.getPosicaoX(), rato.getPosicaoY()));
             }
+            rato.addAcao(new RatoAcao(EnumEventos.CHANGECOLOR, rato.getPosicaoX(), rato.getPosicaoY()));
         }
     }
 }
