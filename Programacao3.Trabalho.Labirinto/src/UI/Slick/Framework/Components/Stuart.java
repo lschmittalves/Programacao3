@@ -5,11 +5,9 @@
  */
 package UI.Slick.Framework.Components;
 
-import Modelos.EnumDirecoes;
 import Modelos.EnumEventos;
 import Modelos.Rato;
 import Modelos.RatoAcao;
-import java.util.LinkedList;
 import java.util.Queue;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
@@ -35,11 +33,14 @@ public class Stuart {
     private float posAtualRatoX;
     private float posAtualRatoY;
 
+    private IStuartListener iStuartListener;
+
     private Queue<RatoAcao> filaDeAcoe;
 
-    public Stuart(Rato rato, float tamanhoSprite) throws SlickException {
+    public Stuart(Rato rato, IStuartListener stuartListener, float tamanhoSprite) throws SlickException {
 
         this.rato = rato;
+        this.iStuartListener = stuartListener;
 
         int[] duration = new int[]{100, 100, 100, 100, 100, 100, 100};
 
@@ -57,7 +58,7 @@ public class Stuart {
 
     }
 
-    public Animation getProxMovimento(int delta) throws InterruptedException {
+    public void verificarProximaAcao(int delta) throws InterruptedException {
 
         if (filaDeAcoe != null && filaDeAcoe.size() != 0) {
 
@@ -65,7 +66,7 @@ public class Stuart {
 
             switch (proxAcao.getEvento()) {
                 case MOVE:
-                    return andar(proxAcao, delta);
+                    andar(proxAcao, delta);
                 case CHANGECOLOR:
                     break;
                 case DEAD:
@@ -77,45 +78,46 @@ public class Stuart {
 
             }
         }
-        return null;
 
     }
 
-    private Animation andar(RatoAcao proxAcao, int delta) {
+    private void andar(RatoAcao proxAcao, int delta) {
         switch (proxAcao.getDirecoes()) {
             case FRENTE:
                 andarFrente(delta);
-                return up;
+                iStuartListener.onMove(up);
+                break;
             case ATRAS:
                 andarTraz(delta);
-                return down;
+                iStuartListener.onMove(down);
+                break;
             case ESQUERDA:
                 andarEsquerda(delta);
-                return left;
+                iStuartListener.onMove(left);
+                break;
             case DIREITA:
                 andarDireita(delta);
-                return right;
+                iStuartListener.onMove(right);
+                break;
         }
-        return null;
     }
 
-    public EnumEventos checkAction() {
+    /*  public EnumEventos checkAction() {
 
-        if (filaDeAcoe != null && filaDeAcoe.size() != 0) {
+     if (filaDeAcoe != null && filaDeAcoe.size() != 0) {
 
-            RatoAcao proxAcao = filaDeAcoe.peek();
+     RatoAcao proxAcao = filaDeAcoe.peek();
 
-            if (getPosXNaTelaByLabirinto() == proxAcao.getPosX() && getPosAtualRatoY() == proxAcao.getPosY()) {
-                return proxAcao.getEvento();
-            } else {
-                return null;
-            }
-        } else {
-            return null;
-        }
+     if (getPosXNaTelaByLabirinto() == proxAcao.getPosX() && getPosAtualRatoY() == proxAcao.getPosY()) {
+     return proxAcao.getEvento();
+     } else {
+     return null;
+     }
+     } else {
+     return null;
+     }
 
-    }
-
+     }*/
     private void andarDireita(int delta) {
         right.update(delta);
         posAtualRatoX += delta * 0.05f;

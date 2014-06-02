@@ -12,6 +12,7 @@ import UI.Slick.Framework.Components.BackGround;
 import UI.Slick.Framework.Components.Button;
 import UI.Slick.Framework.Components.IButtonListener;
 import UI.Slick.Framework.Components.ISlickComponent;
+import UI.Slick.Framework.Components.IStuartListener;
 import UI.Slick.Framework.Components.Snake;
 import UI.Slick.Framework.Components.Stuart;
 import UI.Slick.LabirintoSlickMain;
@@ -30,7 +31,7 @@ import org.newdawn.slick.state.StateBasedGame;
  *
  * @author leonardo.alves
  */
-public class LabirintoSlick extends BasicGameState implements IButtonListener {
+public class LabirintoSlick extends BasicGameState implements IButtonListener, IStuartListener {
 
     private static final int TAMANHO_SPRITE = 30;
     private Animation sprite;
@@ -43,8 +44,7 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener {
     public LabirintoSlick() {
         screenComponents = new LinkedList<>();
     }
-    
-    
+
     private void gerarBackground() throws SlickException {
 
         if (labirinto == null) {
@@ -101,7 +101,6 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener {
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) {
-
     }
 
     @Override
@@ -113,7 +112,7 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener {
             labirinto = LabirintoSlickMain.getInstance().getLabirinto();
             gerarBackground();
 
-            stuart = new Stuart(labirinto.getRato(), TAMANHO_SPRITE);
+            stuart = new Stuart(labirinto.getRato(), this, TAMANHO_SPRITE);
 
             // Original orientation of the sprite. It will look right.
             sprite = stuart.getAnimationRight();
@@ -144,14 +143,14 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener {
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
         try {
-            sprite = stuart.getProxMovimento(delta);
-            
+
+            stuart.verificarProximaAcao(delta);
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
 
     }
-    
 
     @Override
     public void onClick(Button sender) {
@@ -162,5 +161,27 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener {
         }
     }
 
+    @Override
+    public void onDead() {
+    }
+
+    @Override
+    public void onEat() {
+    }
+
+    @Override
+    public void onChangeColor() {
+    }
+
+    @Override
+    public void onFinish() {
+    }
+
+    @Override
+    public void onMove(Animation animation) {
+
+        sprite = animation;
+
+    }
 
 }
