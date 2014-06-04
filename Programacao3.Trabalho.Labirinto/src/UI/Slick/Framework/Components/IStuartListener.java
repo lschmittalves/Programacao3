@@ -15,7 +15,7 @@ public interface IStuartListener {
     
     public void onMove(Animation animation);
     public void onDead();
-    public void onEat();
+    public void onEat(int x, int y);
     public void onChangeColor();
     public void onFinish();
 }

@@ -86,6 +86,14 @@ public class Button implements ISlickComponent {
         return id;
     }
 
-   
+     @Override
+    public int getPosX() {
+       return  x;
+    }
+
+    @Override
+    public int getPosY() {
+         return  y;
+    }
 
 }

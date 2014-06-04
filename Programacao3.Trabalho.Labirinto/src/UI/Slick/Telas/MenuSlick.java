@@ -27,7 +27,6 @@ public class MenuSlick extends BasicGameState implements IButtonListener, IFrmAc
     private Image background;
     private TreeMap<String, ISlickComponent> screenComponents;
 
-
     public MenuSlick() {
 
     }
@@ -58,8 +57,9 @@ public class MenuSlick extends BasicGameState implements IButtonListener, IFrmAc
         for (Map.Entry<String, ISlickComponent> entry : screenComponents.entrySet()) {
             String key = entry.getKey();
             if (key == "btnPlay") {
-                if(LabirintoSlickMain.getInstance().podeIniciar())
+                if (LabirintoSlickMain.getInstance().podeIniciar()) {
                     entry.getValue().draw();
+                }
             } else {
                 entry.getValue().draw();
             }
@@ -106,10 +106,25 @@ public class MenuSlick extends BasicGameState implements IButtonListener, IFrmAc
         try {
             LabirintoSlickMain.getInstance().salvarLabirinto(new Fachada().criarLabirinto(file.getAbsolutePath()));
             JOptionPane.showMessageDialog(null, "Labirinto Importado!");
-            
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
+    }
+
+    @Override
+    public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+        try {
+            setTamanhoTela();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+
+    private void setTamanhoTela() throws SlickException {
+
+        LabirintoSlickMain.getInstance().setTamanhoJanela(1024, 768);
+
     }
 
 }

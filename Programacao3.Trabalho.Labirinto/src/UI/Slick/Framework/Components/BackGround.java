@@ -38,5 +38,15 @@ public class BackGround implements ISlickComponent{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public int getPosX() {
+       return  x;
+    }
+
+    @Override
+    public int getPosY() {
+         return  y;
+    }
+
     
 }

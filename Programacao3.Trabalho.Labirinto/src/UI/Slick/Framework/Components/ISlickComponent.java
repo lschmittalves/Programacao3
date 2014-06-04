@@ -13,5 +13,7 @@ public interface ISlickComponent {
 
     public void draw();
     public void updateMouseHover(int posX, int posY,boolean isPressed);
+    public int getPosX();
+     public int getPosY();
 
 }

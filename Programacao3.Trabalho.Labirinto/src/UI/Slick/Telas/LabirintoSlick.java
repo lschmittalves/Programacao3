@@ -30,9 +30,12 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
     private static final int TAMANHO_SPRITE = 30;
     private Animation sprite;
     private Stuart stuart;
-  
+
     private int height;
     private int width;
+    private int queijosCount;
+    private int queijosLastCount;
+    private int queijosX, queijosY;
 
     private LinkedList<ISlickComponent> screenComponents;
 
@@ -40,6 +43,8 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
 
     public LabirintoSlick() {
         screenComponents = new LinkedList<>();
+        queijosCount = 0;
+        queijosLastCount = 0;
     }
 
     private void gerarBackground() throws SlickException {
@@ -90,18 +95,18 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
 
     private void setTamanhoTela() throws SlickException {
 
-         height = (LabirintoSlickMain.getInstance().getLabirinto().getNoLinhas() + 2) * TAMANHO_SPRITE;
-         width = LabirintoSlickMain.getInstance().getLabirinto().getNoColunas() * TAMANHO_SPRITE;
-         LabirintoSlickMain.getInstance().setTamanhoJanela(width, height);
+        height = (LabirintoSlickMain.getInstance().getLabirinto().getNoLinhas() + 2) * TAMANHO_SPRITE;
+        width = LabirintoSlickMain.getInstance().getLabirinto().getNoColunas() * TAMANHO_SPRITE;
+        LabirintoSlickMain.getInstance().setTamanhoJanela(width, height);
 
     }
 
-    private void atualizaQueijos(Graphics grac){
-    
-        grac.drawString("Queijos Comidos: "+labirinto.getRato().getQueijosComidos(), height-20, width-20);
-    
+    private void atualizaQueijos(Graphics grac) {
+
+        grac.drawString("Queijos Comidos: " + queijosCount, (int) (width * 0.05), height - 30);
+
     }
-    
+
     @Override
     public int getID() {
         // TODO Auto-generated method stub
@@ -139,6 +144,8 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
         try {
             labirinto = null;
             stuart = null;
+            screenComponents = null;
+              LabirintoSlickMain.getInstance().zerarLabirinto();
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
@@ -158,7 +165,14 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
             grphcs.setBackground(Color.white);
 
             for (int i = 0; i < screenComponents.size(); i++) {
+                if (queijosCount != queijosLastCount && 
+                    screenComponents.get(i).getPosX() == queijosX && 
+                    screenComponents.get(i).getPosY() == queijosY) {
+                    screenComponents.set(i,new BackGround(queijosX, queijosY, "data/sprites/spriteFundo.png"));
+                }
+
                 screenComponents.get(i).draw();
+
             }
             sprite.draw((int) stuart.getPosAtualRatoX(), (int) stuart.getPosAtualRatoY());
             atualizaQueijos(grphcs);
@@ -198,16 +212,14 @@ public class LabirintoSlick extends BasicGameState implements IButtonListener, I
     }
 
     @Override
-    public void onEat() {
-
-        JOptionPane.showMessageDialog(null, "Nossa, já comi " + labirinto.getRato().getQueijosComidos() + ".");
-
+    public void onEat(int x, int y) {
+        queijosX = x;
+        queijosY = y;
+        queijosCount++;
     }
 
     @Override
     public void onChangeColor() {
-
-        JOptionPane.showMessageDialog(null, "Finge que mudei de cor.");
 
     }
 

@@ -19,8 +19,8 @@ import org.newdawn.slick.SlickException;
  */
 public class Stuart {
 
-    private static final float MARGEM_ERRO_PARAMAIS = 1.007f;
-    private static final float MARGEM_ERRO_PARAMENOS = 0.993f;
+    private static final float MARGEM_ERRO_PARAMAIS = 1.009f;
+    private static final float MARGEM_ERRO_PARAMENOS = 0.990f;
 
     private float tamanhoSprite;
     private Rato rato;
@@ -71,15 +71,15 @@ public class Stuart {
                 case CHANGECOLOR:
                     break;
                 case DEAD:
-            //        iStuartListener.onDead();
+                    iStuartListener.onDead();
                     filaDeAcoe.remove();
                     break;
                 case EAT:
-            //        iStuartListener.onEat();
+                    iStuartListener.onEat((int)posAtualRatoX,(int)posAtualRatoY);
                     filaDeAcoe.remove();
                     break;
                 case FINISH:
-            //        iStuartListener.onFinish();
+                    iStuartListener.onFinish();
                     filaDeAcoe.remove();
                     break;
 

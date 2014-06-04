@@ -70,4 +70,10 @@ public class LabirintoSlickMain extends StateBasedGame {
     public Labirinto getLabirinto() {
         return labirinto;
     }
+    
+    public void zerarLabirinto(){
+        labirinto =null;
+    }
+    
+    
 }
